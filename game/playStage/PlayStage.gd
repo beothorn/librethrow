@@ -7,7 +7,17 @@ func _ready():
 
 
 func _on_StaticBody_input_event(camera, event, click_position, click_normal, shape_idx):
-	var mouse_click = event as InputEventMouseButton
-	if mouse_click and mouse_click.button_index == 1 and mouse_click.pressed:
+	pass
+
+func _input(event):
+	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
+		ball.translation = Vector3(0,4.908,0)
+		ball.set_linear_velocity(Vector3(0,0,0))
+		var pos = get_node("Camera").project_ray_origin(event.position)
 		ball.gravity_scale = 1
-		ball.apply_impulse(Vector3(0,0,0), Vector3(5.5,-5.5,0))
+		var x = pos - ball.translation
+		x = x.normalized()
+		x = x * 15
+		x.z = 0
+		ball.apply_impulse(Vector3(0,0,0), x)
+		print(pos)
