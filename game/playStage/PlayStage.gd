@@ -1,11 +1,13 @@
 extends Spatial
 
 onready var ball = get_node("/root/GameRoom/Ball")
+onready var ball_collision_shape = get_node("/root/GameRoom/Ball/Ball_collision")
+onready var floor_collision_shape = get_node("/root/GameRoom/Walls/Walls_collisions/Floor_collision")
 
 var throwing = false
 
 func _ready():
-	PhysicsServer.area_set_param(get_world().get_space(), PhysicsServer.AREA_PARAM_GRAVITY_VECTOR, Vector3(0, -1, 0))
+	set_process(true)
 
 func _on_StaticBody_input_event(camera, event, click_position, click_normal, shape_idx):
 	pass
@@ -18,6 +20,12 @@ func throw_ball(towards_point):
 	throw_direction = throw_direction.normalized()
 	throw_direction = throw_direction * 15
 	ball.apply_impulse(Vector3(0,0,0), throw_direction)
+
+func _process(delta):
+	#if ball_collision_shape.collide(ball_collision_shape.get_transform(), floor_collision_shape, floor_collision_shape.get_transform()):
+	#	throwing = false
+	#	ball.set_linear_velocity(Vector3(0,0,0))
+	pass
 
 func _input(event):
 	var mouse_click = event as InputEventMouseButton
