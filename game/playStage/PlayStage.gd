@@ -4,8 +4,6 @@ onready var root = get_node("/root/GameRoom")
 onready var stones = get_node("/root/GameRoom/Stones")
 onready var aim_ball = get_node("/root/GameRoom/Aim_ball")
 onready var ball_gen = preload("res://playStage/ThrownBall.tscn") 
-onready var ball_collision_shape = get_node("/root/GameRoom/Ball/Ball_collision")
-onready var floor_collision_shape = get_node("/root/GameRoom/Walls/Walls_collisions/Floor_collision")
 
 var throw_force = 15
 var aim_circle_radius = 2.2
@@ -27,19 +25,22 @@ func throw_ball(towards_point):
 
 func _input(event):
 	var mouse_click = event as InputEventMouseButton
-	if mouse_click and mouse_click.button_index == 1 and mouse_click.pressed and !throwing:
-		throw_ball(event.position)
-		throwing = true
-	else:
-		if !throwing:
-			var pos = get_node("Camera").project_ray_origin(event.position)
-			var pos2d = Vector3(pos.x, pos.y, 0)
-			var pos_cursor = pos2d.normalized() * aim_circle_radius
-			aim_ball.translation = pos_cursor
+	if mouse_click:
+		if mouse_click.button_index == BUTTON_LEFT and !mouse_click.pressed and !throwing:
+			throw_ball(event.position)
+			throwing = true
+	var mouse_motion = event as InputEventMouseMotion
+	if mouse_motion:
+		var pos = get_node("Camera").project_ray_origin(event.position)
+		var pos2d = Vector3(pos.x, pos.y, 0)
+		var pos_cursor = pos2d.normalized() * aim_circle_radius
+		aim_ball.translation.x = pos_cursor.x
+		aim_ball.translation.y = pos_cursor.y
 			
 func _on_ball_hit(obj, ball):
 	if obj.is_in_group("Stone"):
-		stones.remove_child(obj)
+		#removing child is slow so we just hide it
+		obj.translation.z=-1000
 	if obj.is_in_group("BallKiller"):
 		root.remove_child(ball)
 		throwing = false
