@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://playStage/PlayStage.gd" type="Script" id=1]
 
@@ -6,10 +6,18 @@
 radius = 2.0
 height = 4.0
 
+[sub_resource type="SpatialMaterial" id=13]
+albedo_color = Color( 1, 0.654902, 0, 1 )
+
 [sub_resource type="CubeMesh" id=6]
+material = SubResource( 13 )
 size = Vector3( 10.53, 8.38, 7.19 )
 
+[sub_resource type="SpatialMaterial" id=14]
+albedo_color = Color( 1, 0.537255, 0, 1 )
+
 [sub_resource type="CubeMesh" id=11]
+material = SubResource( 14 )
 size = Vector3( 10.53, 8.38, 10.96 )
 
 [sub_resource type="BoxShape" id=7]
