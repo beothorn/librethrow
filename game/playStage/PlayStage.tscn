@@ -1,29 +1,22 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://playStage/PlayStage.gd" type="Script" id=1]
-
-[sub_resource type="PhysicsMaterial" id=1]
-bounce = 0.8
-
-[sub_resource type="SpatialMaterial" id=2]
-
-[sub_resource type="SphereMesh" id=3]
-material = SubResource( 2 )
-radius = 0.18
-height = 0.36
-
-[sub_resource type="SphereShape" id=4]
-radius = 0.184528
 
 [sub_resource type="SphereMesh" id=5]
 radius = 2.0
 height = 4.0
 
 [sub_resource type="CubeMesh" id=6]
-size = Vector3( 10.53, 7.73, 7.19 )
+size = Vector3( 10.53, 8.38, 7.19 )
+
+[sub_resource type="CubeMesh" id=11]
+size = Vector3( 10.53, 8.38, 10.96 )
 
 [sub_resource type="BoxShape" id=7]
 extents = Vector3( 0.683, 8.044, 2.474 )
+
+[sub_resource type="BoxShape" id=12]
+extents = Vector3( 5.256, 1, 1 )
 
 [sub_resource type="SphereMesh" id=8]
 radius = 0.21
@@ -32,6 +25,10 @@ height = 0.42
 [sub_resource type="SphereShape" id=9]
 radius = 0.209693
 
+[sub_resource type="SphereMesh" id=10]
+radius = 0.18
+height = 0.36
+
 [node name="GameRoom" type="Spatial"]
 script = ExtResource( 1 )
 
@@ -39,16 +36,6 @@ script = ExtResource( 1 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7.379, 4.072 )
 projection = 1
 size = 19.8
-
-[node name="Ball" type="RigidBody" parent="."]
-physics_material_override = SubResource( 1 )
-gravity_scale = 0.0
-
-[node name="Ball" type="CSGMesh" parent="Ball"]
-mesh = SubResource( 3 )
-
-[node name="Ball_collision" type="CollisionShape" parent="Ball"]
-shape = SubResource( 4 )
 
 [node name="Aim" type="CSGMesh" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.032, 0.045 )
@@ -62,32 +49,169 @@ mesh = SubResource( 6 )
 
 [node name="BottomWall" type="CSGMesh" parent="Walls"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -18.156, -3.44987 )
-mesh = SubResource( 6 )
+mesh = SubResource( 11 )
 
 [node name="Walls_collisions" type="StaticBody" parent="Walls"]
+editor/display_folded = true
 
-[node name="Floor_collision" type="CollisionShape" parent="Walls/Walls_collisions"]
-transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.01, -14.973, 0 )
-shape = SubResource( 7 )
-
-[node name="CollisionShape2" type="CollisionShape" parent="Walls/Walls_collisions"]
+[node name="Right" type="CollisionShape" parent="Walls/Walls_collisions"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.951, -6.241, 0 )
 shape = SubResource( 7 )
 
-[node name="CollisionShape3" type="CollisionShape" parent="Walls/Walls_collisions"]
+[node name="Left" type="CollisionShape" parent="Walls/Walls_collisions"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.949, -6.241, 0 )
 shape = SubResource( 7 )
 
-[node name="Stones" type="Spatial" parent="."]
-editor/display_folded = true
+[node name="Top" type="CollisionShape" parent="Walls/Walls_collisions"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.06997, 0 )
+shape = SubResource( 12 )
 
-[node name="Stone" type="StaticBody" parent="Stones"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.104614, -0.910785, 0 )
+[node name="Stones" type="Spatial" parent="."]
+
+[node name="Stone" type="StaticBody" parent="Stones" groups=[
+"Stone",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.104614, -8.1746, 0 )
 
 [node name="Stone" type="CSGMesh" parent="Stones/Stone"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0477142, -7.38316, 0.0454814 )
 mesh = SubResource( 8 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Stones/Stone"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0477142, -7.38316, 0.0454814 )
 shape = SubResource( 9 )
+
+[node name="Stone2" type="StaticBody" parent="Stones" groups=[
+"Stone",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.37433, -7.59409, 0 )
+
+[node name="Stone" type="CSGMesh" parent="Stones/Stone2"]
+mesh = SubResource( 8 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone2"]
+shape = SubResource( 9 )
+
+[node name="Stone3" type="StaticBody" parent="Stones" groups=[
+"Stone",
+]]
+editor/display_folded = true
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.36653, -6.90142, 0 )
+
+[node name="Stone" type="CSGMesh" parent="Stones/Stone3"]
+mesh = SubResource( 8 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone3"]
+shape = SubResource( 9 )
+
+[node name="Stone4" type="StaticBody" parent="Stones" groups=[
+"Stone",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.52194, -7.17121, 0 )
+
+[node name="Stone" type="CSGMesh" parent="Stones/Stone4"]
+mesh = SubResource( 8 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone4"]
+shape = SubResource( 9 )
+
+[node name="Stone5" type="StaticBody" parent="Stones" groups=[
+"Stone",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.23299, -6.51978, 0 )
+
+[node name="Stone" type="CSGMesh" parent="Stones/Stone5"]
+mesh = SubResource( 8 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone5"]
+shape = SubResource( 9 )
+
+[node name="Stone6" type="StaticBody" parent="Stones" groups=[
+"Stone",
+]]
+editor/display_folded = true
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.56466, -5.72202, 0 )
+
+[node name="Stone" type="CSGMesh" parent="Stones/Stone6"]
+mesh = SubResource( 8 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone6"]
+shape = SubResource( 9 )
+
+[node name="Stone7" type="StaticBody" parent="Stones" groups=[
+"Stone",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.11535, -6.54573, 0 )
+
+[node name="Stone" type="CSGMesh" parent="Stones/Stone7"]
+mesh = SubResource( 8 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone7"]
+shape = SubResource( 9 )
+
+[node name="Stone8" type="StaticBody" parent="Stones" groups=[
+"Stone",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.666233, -8.15571, 0 )
+
+[node name="Stone" type="CSGMesh" parent="Stones/Stone8"]
+mesh = SubResource( 8 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone8"]
+shape = SubResource( 9 )
+
+[node name="Stone9" type="StaticBody" parent="Stones" groups=[
+"Stone",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.606777, -7.93106, 0 )
+
+[node name="Stone" type="CSGMesh" parent="Stones/Stone9"]
+mesh = SubResource( 8 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone9"]
+shape = SubResource( 9 )
+
+[node name="Stone10" type="StaticBody" parent="Stones" groups=[
+"Stone",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.28402, -7.88116, 0 )
+
+[node name="Stone" type="CSGMesh" parent="Stones/Stone10"]
+mesh = SubResource( 8 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone10"]
+shape = SubResource( 9 )
+
+[node name="Stone11" type="StaticBody" parent="Stones" groups=[
+"Stone",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.92332, -7.60367, 0 )
+
+[node name="Stone" type="CSGMesh" parent="Stones/Stone11"]
+mesh = SubResource( 8 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone11"]
+shape = SubResource( 9 )
+
+[node name="Stone12" type="StaticBody" parent="Stones" groups=[
+"Stone",
+]]
+editor/display_folded = true
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.96108, -5.64173, 0 )
+
+[node name="Stone" type="CSGMesh" parent="Stones/Stone12"]
+mesh = SubResource( 8 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone12"]
+shape = SubResource( 9 )
+
+[node name="Aim_ball" type="CSGMesh" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.6232, 0 )
+mesh = SubResource( 10 )
+
+[node name="Outside_floor" type="StaticBody" parent="." groups=[
+"BallKiller",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -14.996, 0 )
+
+[node name="Floor_collision" type="CollisionShape" parent="Outside_floor"]
+transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0 )
+shape = SubResource( 7 )
