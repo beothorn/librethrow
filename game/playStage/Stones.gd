@@ -1,6 +1,6 @@
 extends Spatial
 
-func rotate_clockwise(amount):
-	self.rotation.y = self.rotation.y + amount
+func rotate(axis:Vector3, angle:float ):
+	.rotate(axis, angle)
 	for stone in get_children():
-		stone.get_node("CollisionShape").rotation.y = stone.get_node("CollisionShape").rotation.y - amount
+		stone.project_collision_shadow()

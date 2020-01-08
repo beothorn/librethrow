@@ -17,6 +17,8 @@ var rotating_stones = false
 
 var throwing = false
 
+var y_axis = Vector3(0,1,0)
+
 func throw_ball(towards_point):
 	var ball = ball_gen.instance()
 	root.add_child(ball)
@@ -54,8 +56,7 @@ func _input(event):
 				aim_ball.translation.y = pos_cursor.y
 		else:
 			if rotating_stones:
-				print(event.position.x - initial_x)
-				stones.rotate_clockwise((event.position.x - initial_x)/10000)
+				stones.rotate(y_axis, (event.position.x - initial_x)/10000)
 			
 func _on_ball_hit(obj, ball):
 	if obj.is_in_group("Stone"):
