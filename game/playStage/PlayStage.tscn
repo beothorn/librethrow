@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://playStage/PlayStage.gd" type="Script" id=1]
 [ext_resource path="res://playStage/Stones.gd" type="Script" id=2]
@@ -46,11 +46,19 @@ radius = 0.21
 radius = 0.15
 height = 0.3
 
+[sub_resource type="SpatialMaterial" id=14]
+albedo_color = Color( 0.345098, 0.160784, 1, 1 )
+
+[sub_resource type="CubeMesh" id=15]
+material = SubResource( 14 )
+
+[sub_resource type="BoxShape" id=16]
+
 [node name="GameRoom" type="Spatial"]
 script = ExtResource( 1 )
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7.379, 6.43831 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7.379, 15.5369 )
 projection = 1
 size = 19.8
 
@@ -96,8 +104,7 @@ script = ExtResource( 2 )
 [node name="Stone" type="StaticBody" parent="Stones" groups=[
 "Stone",
 ]]
-editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.96187, -7.53755, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.11078, -7.53755, -1.44257 )
 script = ExtResource( 3 )
 
 [node name="StoneMesh" type="CSGMesh" parent="Stones/Stone"]
@@ -110,8 +117,7 @@ shape = SubResource( 10 )
 [node name="Stone6" type="StaticBody" parent="Stones" groups=[
 "Stone",
 ]]
-editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.96187, -7.53755, 4.1228 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11503, -6.6184, 1.40362 )
 script = ExtResource( 3 )
 
 [node name="StoneMesh" type="CSGMesh" parent="Stones/Stone6"]
@@ -124,8 +130,7 @@ shape = SubResource( 10 )
 [node name="Stone7" type="StaticBody" parent="Stones" groups=[
 "Stone",
 ]]
-editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.96187, -3.84199, 4.1228 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1278, -5.59094, 1.50576 )
 script = ExtResource( 3 )
 
 [node name="StoneMesh" type="CSGMesh" parent="Stones/Stone7"]
@@ -138,8 +143,7 @@ shape = SubResource( 10 )
 [node name="Stone8" type="StaticBody" parent="Stones" groups=[
 "Stone",
 ]]
-editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.68388, -3.84199, 4.1228 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.858328, -5.55264, 1.53129 )
 script = ExtResource( 3 )
 
 [node name="StoneMesh" type="CSGMesh" parent="Stones/Stone8"]
@@ -152,8 +156,7 @@ shape = SubResource( 10 )
 [node name="Stone2" type="StaticBody" parent="Stones" groups=[
 "Stone",
 ]]
-editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.96187, -4.72878, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.08525, -4.72878, -1.35321 )
 script = ExtResource( 3 )
 
 [node name="StoneMesh" type="CSGMesh" parent="Stones/Stone2"]
@@ -166,8 +169,7 @@ shape = SubResource( 10 )
 [node name="Stone3" type="StaticBody" parent="Stones" groups=[
 "Stone",
 ]]
-editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.47911, -4.72878, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.62379, -4.72878, -1.37874 )
 script = ExtResource( 3 )
 
 [node name="StoneMesh" type="CSGMesh" parent="Stones/Stone3"]
@@ -181,7 +183,7 @@ shape = SubResource( 10 )
 "Stone",
 ]]
 editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.47911, -7.56965, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.84081, -7.56965, -1.4298 )
 script = ExtResource( 3 )
 
 [node name="StoneMesh" type="CSGMesh" parent="Stones/Stone4"]
@@ -194,8 +196,7 @@ shape = SubResource( 10 )
 [node name="Stone5" type="StaticBody" parent="Stones" groups=[
 "Stone",
 ]]
-editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.47911, -7.56965, 2.63224 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.921646, -6.6505, 1.41946 )
 script = ExtResource( 3 )
 
 [node name="StoneMesh" type="CSGMesh" parent="Stones/Stone5"]
@@ -220,3 +221,13 @@ shape = SubResource( 6 )
 
 [node name="Position3D" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -13.1327, 0 )
+
+[node name="StonesRotation" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -15.3214, 4.47858 )
+
+[node name="CSGMesh" type="CSGMesh" parent="StonesRotation"]
+mesh = SubResource( 15 )
+
+[node name="CollisionShape" type="CollisionShape" parent="StonesRotation"]
+shape = SubResource( 16 )
+[connection signal="input_event" from="StonesRotation" to="." method="_on_StonesRotation_input_event"]

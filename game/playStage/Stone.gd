@@ -1,10 +1,15 @@
 extends StaticBody
 
 onready var collisionShape = get_node("CollisionShape")
-onready var cg = get_node("CSGMesh")
 onready var stone = get_node("StoneMesh")
+var original_position
 
 func _ready():
+	original_position = translation
+	project_collision_shadow()
+	
+func reset():
+	translation = original_position
 	project_collision_shadow()
 	
 func flat():

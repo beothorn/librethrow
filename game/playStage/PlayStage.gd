@@ -3,6 +3,7 @@ extends Spatial
 onready var root = get_node("/root/GameRoom")
 onready var stones = get_node("/root/GameRoom/Stones")
 onready var aim_ball = get_node("/root/GameRoom/Aim_ball")
+onready var stones_rotation = get_node("/root/GameRoom/StonesRotation")
 onready var ball_gen = preload("res://playStage/ThrownBall.tscn") 
 
 var throw_force = 8
@@ -43,7 +44,6 @@ func _input(event):
 			throwing = true
 		if mouse_click.button_index == BUTTON_LEFT and mouse_click.pressed and !throwing and event.position.y > max_y:
 			initial_x = event.position.x
-			rotating_stones = true
 		
 	var mouse_motion = event as InputEventMouseMotion
 	if mouse_motion:
@@ -54,9 +54,6 @@ func _input(event):
 			if pos_cursor.y < maximun_aim_angle:
 				aim_ball.translation.x = pos_cursor.x
 				aim_ball.translation.y = pos_cursor.y
-		else:
-			if rotating_stones:
-				stones.rotate(y_axis, (event.position.x - initial_x)/10000)
 			
 func _on_ball_hit(obj, ball):
 	if obj.is_in_group("Stone"):
@@ -72,7 +69,23 @@ func _on_ball_hit(obj, ball):
 		throwing = false
 		aim_ball.translation.z = 0
 		if should_restart:
+			stones_rotation.translation.x = 0
 			for stone in stones.get_children():
-				stone.translation.z = 0
+				stone.reset()
 			should_restart = false
 	
+
+func _on_StonesRotation_input_event(camera, event, click_position, click_normal, shape_idx):
+	var mouse_click = event as InputEventMouseButton
+	if mouse_click:
+		if mouse_click.button_index == BUTTON_LEFT and !mouse_click.pressed and !throwing:
+			rotating_stones = false
+		if mouse_click.button_index == BUTTON_LEFT and mouse_click.pressed and !throwing and event.position.y > max_y:
+			rotating_stones = true
+		
+	var mouse_motion = event as InputEventMouseMotion
+	if mouse_motion and rotating_stones:
+		var pos = get_node("Camera").project_ray_origin(event.position)
+		if event.position.y > max_y:
+			stones_rotation.translation.x = pos.x
+			stones.set_stones_rotation(stones_rotation.translation.x)

@@ -13,6 +13,7 @@ radius = 0.15
 height = 0.3
 
 [sub_resource type="SphereShape" id=4]
+margin = 0.001
 radius = 0.15
 
 [node name="Ball" type="RigidBody"]
