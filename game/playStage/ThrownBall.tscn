@@ -3,7 +3,7 @@
 [ext_resource path="res://playStage/ThrownBall.gd" type="Script" id=1]
 
 [sub_resource type="PhysicsMaterial" id=1]
-bounce = 0.8
+bounce = 0.7
 
 [sub_resource type="SpatialMaterial" id=2]
 
@@ -19,7 +19,7 @@ radius = 0.15
 [node name="Ball" type="RigidBody"]
 physics_material_override = SubResource( 1 )
 gravity_scale = 0.0
-contacts_reported = 4
+contacts_reported = 15
 contact_monitor = true
 axis_lock_linear_z = true
 script = ExtResource( 1 )

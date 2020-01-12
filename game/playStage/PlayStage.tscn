@@ -1,8 +1,8 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://playStage/PlayStage.gd" type="Script" id=1]
 [ext_resource path="res://playStage/Stones.gd" type="Script" id=2]
-[ext_resource path="res://playStage/Stone.gd" type="Script" id=3]
+[ext_resource path="res://playStage/Stone.tscn" type="PackedScene" id=3]
 
 [sub_resource type="SphereMesh" id=1]
 radius = 2.0
@@ -34,14 +34,6 @@ albedo_color = Color( 0.313726, 1, 0, 1 )
 [sub_resource type="CubeMesh" id=9]
 material = SubResource( 8 )
 size = Vector3( 10, 5.66, 1 )
-
-[sub_resource type="SpatialMaterial" id=14]
-albedo_color = Color( 0.0784314, 0, 1, 1 )
-
-[sub_resource type="SphereMesh" id=10]
-material = SubResource( 14 )
-radius = 0.21
-height = 0.42
 
 [sub_resource type="SphereMesh" id=12]
 radius = 0.15
@@ -97,173 +89,59 @@ mesh = SubResource( 9 )
 [node name="Stones" type="Spatial" parent="."]
 script = ExtResource( 2 )
 
-[node name="Stone" type="StaticBody" parent="Stones" groups=[
-"Stone",
-]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7.538, 0 )
-script = ExtResource( 3 )
+[node name="Stone" parent="Stones" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7.39739, 0 )
 
-[node name="StoneMesh" type="CSGMesh" parent="Stones/Stone"]
-mesh = SubResource( 10 )
+[node name="Stone12" parent="Stones" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -6.82374, -3.42964 )
 
-[node name="Center" type="Position3D" parent="Stones/Stone"]
+[node name="Stone17" parent="Stones" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.94578, -7.07635 )
 
-[node name="Radius" type="Position3D" parent="Stones/Stone"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.212564, 0 )
+[node name="Stone6" parent="Stones" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.81018, -5.56171, 0 )
 
-[node name="Stone12" type="StaticBody" parent="Stones" groups=[
-"Stone",
-]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -6.97581, -9.99459 )
-script = ExtResource( 3 )
+[node name="Stone14" parent="Stones" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.81018, -6.15345, -2.41504 )
 
-[node name="StoneMesh" type="CSGMesh" parent="Stones/Stone12"]
-mesh = SubResource( 10 )
+[node name="Stone2" parent="Stones" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.446171, -7.39739, 0 )
 
-[node name="Center" type="Position3D" parent="Stones/Stone12"]
+[node name="Stone10" parent="Stones" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.446171, -6.82374, -3.42964 )
 
-[node name="Radius" type="Position3D" parent="Stones/Stone12"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.212564, 0 )
+[node name="Stone5" parent="Stones" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.36401, -7.39739, 0 )
 
-[node name="Stone2" type="StaticBody" parent="Stones" groups=[
-"Stone",
-]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.798296, -6.33507, 0.0744128 )
-script = ExtResource( 3 )
+[node name="Stone9" parent="Stones" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.36401, -6.56878, -3.42964 )
 
-[node name="StoneMesh" type="CSGMesh" parent="Stones/Stone2"]
-mesh = SubResource( 10 )
+[node name="Stone3" parent="Stones" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.892343, -7.39739, 0 )
 
-[node name="Center" type="Position3D" parent="Stones/Stone2"]
+[node name="Stone16" parent="Stones" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.892343, -6.56878, -3.42964 )
 
-[node name="Radius" type="Position3D" parent="Stones/Stone2"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.212564, 0 )
+[node name="Stone8" parent="Stones" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.91784, -7.39739, 0 )
 
-[node name="Stone3" type="StaticBody" parent="Stones" groups=[
-"Stone",
-]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.795491, -6.31946, 0.0744128 )
-script = ExtResource( 3 )
+[node name="Stone11" parent="Stones" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.91784, -6.82374, -3.42964 )
 
-[node name="StoneMesh" type="CSGMesh" parent="Stones/Stone3"]
-mesh = SubResource( 10 )
+[node name="Stone4" parent="Stones" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.33214, -5.56171, 0 )
 
-[node name="Center" type="Position3D" parent="Stones/Stone3"]
+[node name="Stone13" parent="Stones" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.33214, -6.15345, -2.41504 )
 
-[node name="Radius" type="Position3D" parent="Stones/Stone3"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.212564, 0 )
+[node name="Stone7" parent="Stones" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.478042, -7.39739, 0 )
 
-[node name="Stone4" type="StaticBody" parent="Stones" groups=[
-"Stone",
-]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.52727, -7.53755, 0.0744128 )
-script = ExtResource( 3 )
+[node name="Stone15" parent="Stones" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.478042, -6.82374, -3.42964 )
 
-[node name="StoneMesh" type="CSGMesh" parent="Stones/Stone4"]
-mesh = SubResource( 10 )
-
-[node name="Center" type="Position3D" parent="Stones/Stone4"]
-
-[node name="Radius" type="Position3D" parent="Stones/Stone4"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.212564, 0 )
-
-[node name="Stone5" type="StaticBody" parent="Stones" groups=[
-"Stone",
-]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.46186, -7.53755, 0.0744128 )
-script = ExtResource( 3 )
-
-[node name="StoneMesh" type="CSGMesh" parent="Stones/Stone5"]
-mesh = SubResource( 10 )
-
-[node name="Center" type="Position3D" parent="Stones/Stone5"]
-
-[node name="Radius" type="Position3D" parent="Stones/Stone5"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.212564, 0 )
-
-[node name="Stone6" type="StaticBody" parent="Stones" groups=[
-"Stone",
-]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.19703, -7.53755, 0.0744128 )
-script = ExtResource( 3 )
-
-[node name="StoneMesh" type="CSGMesh" parent="Stones/Stone6"]
-mesh = SubResource( 10 )
-
-[node name="Center" type="Position3D" parent="Stones/Stone6"]
-
-[node name="Radius" type="Position3D" parent="Stones/Stone6"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.212564, 0 )
-
-[node name="Stone7" type="StaticBody" parent="Stones" groups=[
-"Stone",
-]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.12542, -7.53755, 0.0744128 )
-script = ExtResource( 3 )
-
-[node name="StoneMesh" type="CSGMesh" parent="Stones/Stone7"]
-mesh = SubResource( 10 )
-
-[node name="Center" type="Position3D" parent="Stones/Stone7"]
-
-[node name="Radius" type="Position3D" parent="Stones/Stone7"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.212564, 0 )
-
-[node name="Stone8" type="StaticBody" parent="Stones" groups=[
-"Stone",
-]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.84199, -7.53755, 0.0744128 )
-script = ExtResource( 3 )
-
-[node name="StoneMesh" type="CSGMesh" parent="Stones/Stone8"]
-mesh = SubResource( 10 )
-
-[node name="Center" type="Position3D" parent="Stones/Stone8"]
-
-[node name="Radius" type="Position3D" parent="Stones/Stone8"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.212564, 0 )
-
-[node name="Stone9" type="StaticBody" parent="Stones" groups=[
-"Stone",
-]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.80758, -7.53755, 0.0744128 )
-script = ExtResource( 3 )
-
-[node name="StoneMesh" type="CSGMesh" parent="Stones/Stone9"]
-mesh = SubResource( 10 )
-
-[node name="Center" type="Position3D" parent="Stones/Stone9"]
-
-[node name="Radius" type="Position3D" parent="Stones/Stone9"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.212564, 0 )
-
-[node name="Stone10" type="StaticBody" parent="Stones" groups=[
-"Stone",
-]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.43113, -7.53755, 0.0744128 )
-script = ExtResource( 3 )
-
-[node name="StoneMesh" type="CSGMesh" parent="Stones/Stone10"]
-mesh = SubResource( 10 )
-
-[node name="Center" type="Position3D" parent="Stones/Stone10"]
-
-[node name="Radius" type="Position3D" parent="Stones/Stone10"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.212564, 0 )
-
-[node name="Stone11" type="StaticBody" parent="Stones" groups=[
-"Stone",
-]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.43393, -7.53755, 0.0744128 )
-script = ExtResource( 3 )
-
-[node name="StoneMesh" type="CSGMesh" parent="Stones/Stone11"]
-mesh = SubResource( 10 )
-
-[node name="Center" type="Position3D" parent="Stones/Stone11"]
-
-[node name="Radius" type="Position3D" parent="Stones/Stone11"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.212564, 0 )
+[node name="Stone18" parent="Stones" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.478042, -4.94578, -7.07635 )
 
 [node name="Aim_ball" type="CSGMesh" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.2, 0 )

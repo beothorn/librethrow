@@ -90,15 +90,19 @@ func _on_ball_hit(obj, ball):
 		obj.hide()
 		should_restart = true
 		for stone in stones.get_children():
-			if !stone.is_hidden():
+			if stone.is_in_group("Stone") and !stone.is_hidden():
 				should_restart = false
 		
 	if obj.is_in_group("BallKiller"):
 		root.remove_child(ball)
 		throwing = false
 		aim_ball.translation.z = 0
+		for stone in stones.get_children():
+				if stone.is_in_group("Stone"):
+					stone.force_hide()
 		if should_restart:
 			stones.set_stones_rotation(0)
 			for stone in stones.get_children():
-				stone.reset()
+				if stone.is_in_group("Stone"):
+					stone.reset()
 			should_restart = false
