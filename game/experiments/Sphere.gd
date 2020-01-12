@@ -1,11 +1,11 @@
 extends CSGSphere
 
-onready var camera = get_node("/root/Spatial/Camera2")
+onready var camera = get_node("/root/Spatial/Camera")
 onready var tween = get_node("Tween")
 onready var sphereProjection = get_node("SphereProjection")
 onready var center_pos = get_node("Center")
 onready var radius_pos = get_node("Radius")
-var plane = Plane(Vector3(0,0,0), Vector3(1,0,0), Vector3(0,1,0))
+const plane = Plane(Vector3(0,0,0), Vector3(1,0,0), Vector3(0,1,0))
 
 var plus = false
 
