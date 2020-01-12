@@ -283,3 +283,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -13.1327, 0 )
 
 [node name="StonesTop" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00421086, 0 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 459.732
+margin_top = 1698.07
+margin_right = 615.732
+margin_bottom = 1712.07
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Drag here to rotate"

@@ -51,4 +51,3 @@ func project_collision_shadow():
 		collisionShape.set_global_transform(sphereProjectionOld)
 		if itersection_radius:
 			collisionShape.shape.radius = itersection_radius.y - itersection.y
-			print(collisionShape.shape.radius)
