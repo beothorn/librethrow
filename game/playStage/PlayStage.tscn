@@ -35,12 +35,13 @@ albedo_color = Color( 0.313726, 1, 0, 1 )
 material = SubResource( 8 )
 size = Vector3( 10, 5.66, 1 )
 
+[sub_resource type="SpatialMaterial" id=14]
+albedo_color = Color( 0.0784314, 0, 1, 1 )
+
 [sub_resource type="SphereMesh" id=10]
+material = SubResource( 14 )
 radius = 0.21
 height = 0.42
-
-[sub_resource type="SphereShape" id=11]
-radius = 0.21
 
 [sub_resource type="SphereMesh" id=12]
 radius = 0.15
@@ -68,6 +69,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -18.156, -0.954575 )
 mesh = SubResource( 3 )
 
 [node name="Walls_collisions" type="StaticBody" parent="Walls"]
+editor/display_folded = true
 
 [node name="Right" type="CollisionShape" parent="Walls/Walls_collisions"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.68891, -6.241, 0 )
@@ -104,13 +106,23 @@ script = ExtResource( 3 )
 [node name="StoneMesh" type="CSGMesh" parent="Stones/Stone"]
 mesh = SubResource( 10 )
 
-[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
-shape = SubResource( 11 )
-
 [node name="Center" type="Position3D" parent="Stones/Stone"]
 
 [node name="Radius" type="Position3D" parent="Stones/Stone"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.212564, 0 )
+
+[node name="Stone12" type="StaticBody" parent="Stones" groups=[
+"Stone",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -6.97581, -9.99459 )
+script = ExtResource( 3 )
+
+[node name="StoneMesh" type="CSGMesh" parent="Stones/Stone12"]
+mesh = SubResource( 10 )
+
+[node name="Center" type="Position3D" parent="Stones/Stone12"]
+
+[node name="Radius" type="Position3D" parent="Stones/Stone12"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.212564, 0 )
 
 [node name="Stone2" type="StaticBody" parent="Stones" groups=[
@@ -121,10 +133,6 @@ script = ExtResource( 3 )
 
 [node name="StoneMesh" type="CSGMesh" parent="Stones/Stone2"]
 mesh = SubResource( 10 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone2"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
-shape = SubResource( 11 )
 
 [node name="Center" type="Position3D" parent="Stones/Stone2"]
 
@@ -140,10 +148,6 @@ script = ExtResource( 3 )
 [node name="StoneMesh" type="CSGMesh" parent="Stones/Stone3"]
 mesh = SubResource( 10 )
 
-[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone3"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
-shape = SubResource( 11 )
-
 [node name="Center" type="Position3D" parent="Stones/Stone3"]
 
 [node name="Radius" type="Position3D" parent="Stones/Stone3"]
@@ -157,10 +161,6 @@ script = ExtResource( 3 )
 
 [node name="StoneMesh" type="CSGMesh" parent="Stones/Stone4"]
 mesh = SubResource( 10 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone4"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
-shape = SubResource( 11 )
 
 [node name="Center" type="Position3D" parent="Stones/Stone4"]
 
@@ -176,10 +176,6 @@ script = ExtResource( 3 )
 [node name="StoneMesh" type="CSGMesh" parent="Stones/Stone5"]
 mesh = SubResource( 10 )
 
-[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone5"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
-shape = SubResource( 11 )
-
 [node name="Center" type="Position3D" parent="Stones/Stone5"]
 
 [node name="Radius" type="Position3D" parent="Stones/Stone5"]
@@ -193,10 +189,6 @@ script = ExtResource( 3 )
 
 [node name="StoneMesh" type="CSGMesh" parent="Stones/Stone6"]
 mesh = SubResource( 10 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone6"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
-shape = SubResource( 11 )
 
 [node name="Center" type="Position3D" parent="Stones/Stone6"]
 
@@ -212,10 +204,6 @@ script = ExtResource( 3 )
 [node name="StoneMesh" type="CSGMesh" parent="Stones/Stone7"]
 mesh = SubResource( 10 )
 
-[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone7"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
-shape = SubResource( 11 )
-
 [node name="Center" type="Position3D" parent="Stones/Stone7"]
 
 [node name="Radius" type="Position3D" parent="Stones/Stone7"]
@@ -229,10 +217,6 @@ script = ExtResource( 3 )
 
 [node name="StoneMesh" type="CSGMesh" parent="Stones/Stone8"]
 mesh = SubResource( 10 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone8"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
-shape = SubResource( 11 )
 
 [node name="Center" type="Position3D" parent="Stones/Stone8"]
 
@@ -248,10 +232,6 @@ script = ExtResource( 3 )
 [node name="StoneMesh" type="CSGMesh" parent="Stones/Stone9"]
 mesh = SubResource( 10 )
 
-[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone9"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
-shape = SubResource( 11 )
-
 [node name="Center" type="Position3D" parent="Stones/Stone9"]
 
 [node name="Radius" type="Position3D" parent="Stones/Stone9"]
@@ -266,10 +246,6 @@ script = ExtResource( 3 )
 [node name="StoneMesh" type="CSGMesh" parent="Stones/Stone10"]
 mesh = SubResource( 10 )
 
-[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone10"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
-shape = SubResource( 11 )
-
 [node name="Center" type="Position3D" parent="Stones/Stone10"]
 
 [node name="Radius" type="Position3D" parent="Stones/Stone10"]
@@ -283,10 +259,6 @@ script = ExtResource( 3 )
 
 [node name="StoneMesh" type="CSGMesh" parent="Stones/Stone11"]
 mesh = SubResource( 10 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Stones/Stone11"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
-shape = SubResource( 11 )
 
 [node name="Center" type="Position3D" parent="Stones/Stone11"]
 

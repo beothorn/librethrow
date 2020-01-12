@@ -1,6 +1,6 @@
 extends StaticBody
 
-onready var collisionShape = get_node("CollisionShape")
+var collisionShape
 onready var stone = get_node("StoneMesh")
 onready var camera = get_node("/root/GameRoom/Camera")
 onready var center_pos = get_node("Center")
@@ -12,6 +12,10 @@ const plane = Plane(Vector3(0,0,0), Vector3(1,0,0), Vector3(0,1,0))
 
 func _ready():
 	original_position = translation
+	collisionShape = CollisionShape.new()
+	collisionShape.set_name("CollisionShape")
+	collisionShape.shape = SphereShape.new()
+	add_child(collisionShape)
 	project_collision_shadow()
 	
 func reset():
@@ -47,3 +51,4 @@ func project_collision_shadow():
 		collisionShape.set_global_transform(sphereProjectionOld)
 		if itersection_radius:
 			collisionShape.shape.radius = itersection_radius.y - itersection.y
+			print(collisionShape.shape.radius)
