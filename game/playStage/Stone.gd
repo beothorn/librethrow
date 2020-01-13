@@ -32,6 +32,8 @@ func reset():
 	translation = original_position
 	is_hiding = false
 	is_hidden = false
+	stone_core.set_visible(true)
+	stone_core_on.set_visible(false)
 	project_collision_shadow()
 	
 func hide():
@@ -48,7 +50,7 @@ func force_hide():
 		tween.start()
 	
 func is_hidden():
-	return is_hidden
+	return is_hidden or is_hiding
 
 func project_collision_shadow():
 	var camera_position =  camera.get_global_transform().origin
