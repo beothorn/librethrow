@@ -9,5 +9,5 @@ func _process(delta):
 	self.set_color(Color(1,1,1))
 	self.add_vertex(Vector3(0,0,0)) 
 	self.add_vertex(Vector3(0,1,0))
-	self.add_vertex(Vector3(1,1.5,0))
+	self.add_vertex(Vector3(1,5,0))
 	self.end()

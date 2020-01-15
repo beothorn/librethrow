@@ -4,16 +4,8 @@
 [ext_resource path="res://playStage/Stones.gd" type="Script" id=2]
 [ext_resource path="res://playStage/Stone.tscn" type="PackedScene" id=3]
 
-[sub_resource type="SpatialMaterial" id=1]
-albedo_color = Color( 0, 0.952941, 1, 1 )
-
-[sub_resource type="SphereMesh" id=2]
-material = SubResource( 1 )
-radius = 2.0
-height = 4.0
-
 [sub_resource type="SpatialMaterial" id=3]
-albedo_color = Color( 0.313726, 1, 0, 1 )
+albedo_color = Color( 0, 0.258824, 0.419608, 1 )
 
 [sub_resource type="CubeMesh" id=4]
 material = SubResource( 3 )
@@ -23,28 +15,38 @@ size = Vector3( 13, 10, 1 )
 extents = Vector3( 0.683, 10.184, 2.474 )
 
 [sub_resource type="SpatialMaterial" id=6]
-albedo_color = Color( 0.313726, 1, 0, 1 )
+albedo_color = Color( 0, 0.258824, 0.419608, 1 )
 
 [sub_resource type="CubeMesh" id=7]
 material = SubResource( 6 )
-size = Vector3( 1.372, 6.653, 1 )
+size = Vector3( 1.372, 6.653, 0.19 )
 
 [sub_resource type="BoxShape" id=8]
 extents = Vector3( 5.256, 2.83, 1 )
 
 [sub_resource type="SpatialMaterial" id=9]
-albedo_color = Color( 0.313726, 1, 0, 1 )
+albedo_color = Color( 0, 0.258824, 0.419608, 1 )
 
 [sub_resource type="CubeMesh" id=10]
 material = SubResource( 9 )
-size = Vector3( 10, 5.66, 1 )
+size = Vector3( 10, 5.66, 0.19 )
+
+[sub_resource type="SpatialMaterial" id=1]
+albedo_color = Color( 0.270588, 0.282353, 0.403922, 1 )
+
+[sub_resource type="SphereMesh" id=2]
+material = SubResource( 1 )
+radius = 2.0
+height = 4.0
+radial_segments = 12
+rings = 6
 
 [sub_resource type="SphereMesh" id=11]
 radius = 0.15
 height = 0.3
 
 [sub_resource type="SpatialMaterial" id=12]
-albedo_color = Color( 0.87451, 0.87451, 0.87451, 1 )
+albedo_color = Color( 0.2, 0.2, 0.2, 1 )
 
 [node name="GameRoom" type="Spatial"]
 script = ExtResource( 1 )
@@ -53,12 +55,7 @@ script = ExtResource( 1 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7.379, 16.0562 )
 size = 20.0
 
-[node name="Aim" type="CSGMesh" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.032, 0.045 )
-mesh = SubResource( 2 )
-
 [node name="Walls" type="Spatial" parent="."]
-editor/display_folded = true
 
 [node name="BottomWall1" type="CSGMesh" parent="Walls"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -18.156, 0.99394 )
@@ -69,7 +66,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -18.156, -0.954575 )
 mesh = SubResource( 4 )
 
 [node name="Walls_collisions" type="StaticBody" parent="Walls"]
-editor/display_folded = true
 
 [node name="Right" type="CollisionShape" parent="Walls/Walls_collisions"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.68891, -6.241, 0 )
@@ -95,8 +91,11 @@ shape = SubResource( 8 )
 mesh = SubResource( 10 )
 
 [node name="Stones" type="Spatial" parent="."]
-editor/display_folded = true
 script = ExtResource( 2 )
+
+[node name="Aim" type="CSGMesh" parent="Stones"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.032, 0.045 )
+mesh = SubResource( 2 )
 
 [node name="Stone" parent="Stones" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7.39739, 0 )
@@ -105,7 +104,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7.39739, 0 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -6.82374, -3.42964 )
 
 [node name="Stone17" parent="Stones" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.94578, -7.07635 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.94578, -4.20245 )
 
 [node name="Stone6" parent="Stones" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.81018, -5.56171, 0 )
@@ -150,7 +149,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.478042, -7.39739, 0 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.478042, -6.82374, -3.42964 )
 
 [node name="Stone18" parent="Stones" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.478042, -4.94578, -7.07635 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.478042, -4.94578, -4.20245 )
 
 [node name="Aim_ball" type="CSGMesh" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.2, 0 )
@@ -171,16 +170,8 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -13.1327, 0 )
 [node name="StonesTop" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00421086, 0 )
 
-[node name="Label" type="Label" parent="."]
-margin_left = 459.732
-margin_top = 1698.07
-margin_right = 615.732
-margin_bottom = 1712.07
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Drag here to rotate"
-
 [node name="Background" type="CSGBox" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5.54432, -12.7883 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.784, -12.788 )
 width = 41.3817
-height = 27.9007
+height = 58.061
 material = SubResource( 12 )
