@@ -28,6 +28,9 @@ var rotating_stones = false
 
 var throwing = false
 
+var click_start = 0
+var mouse_pressed = false
+
 var y_axis = Vector3(0,1,0)
 
 func _ready():
@@ -41,6 +44,7 @@ func _screen_position_on_y_axis(position):
 	return plane.intersects_ray(camera.get_global_transform().origin, to)
 
 func throw_ball(towards_point):
+	Engine.time_scale = 1
 	clear_simulations()
 	var ball = ball_gen.instance()
 	root.add_child(ball)
@@ -75,13 +79,22 @@ func _input(event):
 		var left_pressed = mouse_click.button_index == BUTTON_LEFT and mouse_click.pressed
 		var left_released = mouse_click.button_index == BUTTON_LEFT and !mouse_click.pressed
 		
+		if left_pressed:
+			mouse_pressed = true
+			click_start = OS.get_ticks_msec()
+		
+		if left_released:
+			mouse_pressed = false
+			
+		var left_click = left_released and (OS.get_ticks_msec() - click_start) < 200
+		
 		if left_released and !throwing:
 			rotating_stones = false
 		
 		var pos2d = _screen_position_on_y_axis(event.position)
 		
-		if left_released and !throwing and pos2d.y > stones_room_bottom:
-			throw_ball(_screen_position_on_y_axis(event.position))
+		if left_click and !throwing and pos2d.y > stones_room_bottom:
+			throw_ball(aim_ball.translation)
 			throwing = true
 		
 		if left_pressed and !throwing and pos2d.y < stones_room_bottom:
@@ -94,20 +107,20 @@ func _input(event):
 		
 	var mouse_motion = event as InputEventMouseMotion
 	if mouse_motion:
-		var pos2d = _screen_position_on_y_axis(event.position)
-		var pos_cursor = pos2d.normalized() * aim_circle_radius
-		if pos_cursor.y < maximun_aim_angle:
-			aim_ball.translation.x = pos_cursor.x
-			aim_ball.translation.y = pos_cursor.y
-			if !throwing:
-				var ball = throw_simulation_ball(_screen_position_on_y_axis(event.position))
-			#ball.get_node("Ball").visible = false
-		
-		if pos2d.y > stones_room_bottom:
-			rotating_stones = false
+		if mouse_pressed:
+			var pos2d = _screen_position_on_y_axis(event.position)
+			var pos_cursor = pos2d.normalized() * aim_circle_radius
+			if pos_cursor.y < maximun_aim_angle:
+				aim_ball.translation.x = pos_cursor.x
+				aim_ball.translation.y = pos_cursor.y
+				if !throwing:
+					var ball = throw_simulation_ball(_screen_position_on_y_axis(event.position))
 			
-		if !throwing and rotating_stones and pos2d.y < stones_room_bottom:
-			stones.set_stones_rotation( initial_rotation + ((initial_x - pos2d.x)/2))
+			if pos2d.y > stones_room_bottom:
+				rotating_stones = false
+				
+			if !throwing and rotating_stones and pos2d.y < stones_room_bottom:
+				stones.set_stones_rotation( initial_rotation + ((initial_x - pos2d.x)/2))
 			
 func _on_ball_hit(obj, ball):			
 	if obj.is_in_group("Stone"):
@@ -149,6 +162,7 @@ func _on_aim_ball_hit(obj, ball):
 		simulated.add_child(simulated_point_mesh)
 	simulated.add_child(sphere)
 	root.remove_child(ball)
+	
 	
 func _on_physics_tick(ball):
 	simulation_points.append(ball.translation)
