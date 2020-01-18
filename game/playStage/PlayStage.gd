@@ -6,13 +6,19 @@ onready var aim_ball = get_node("/root/GameRoom/Aim_ball")
 onready var stones_bottom = get_node("/root/GameRoom/StonesBottom")
 onready var stones_top = get_node("/root/GameRoom/StonesTop")
 onready var camera = get_node("/root/GameRoom/Camera")
+onready var simulated = get_node("/root/GameRoom/Simulated")
+onready var hit_prediction = get_node("/root/GameRoom/HitPrediction")
+
 onready var ball_gen = preload("res://playStage/ThrownBall.tscn") 
+onready var sim_ball_gen = preload("res://playStage/SimulationBall.tscn")
 
 var throw_force = 8
 var aim_circle_radius = 2.2
 var maximun_aim_angle = -0.26
 var should_restart = false
 var hidden_z_coordinate = -1000
+
+var simulation_points = []
 
 var stones_room_bottom
 
@@ -35,16 +41,32 @@ func _screen_position_on_y_axis(position):
 	return plane.intersects_ray(camera.get_global_transform().origin, to)
 
 func throw_ball(towards_point):
+	clear_simulations()
 	var ball = ball_gen.instance()
 	root.add_child(ball)
 	ball.connect("collision", self, "_on_ball_hit")
 	ball.translation = aim_ball.translation
 	aim_ball.translation.z = hidden_z_coordinate
-	ball.gravity_scale = 1
 	var throw_direction = towards_point
 	throw_direction = throw_direction.normalized()
 	throw_direction = throw_direction * throw_force
 	ball.apply_impulse(Vector3(0,0,0), throw_direction)
+	return ball
+	
+func throw_simulation_ball(towards_point):
+	clear_simulations()
+	simulation_points.clear()
+	var simulation = sim_ball_gen.instance()
+	simulated.add_child(simulation)
+	simulation.connect("collision", self, "_on_aim_ball_hit")
+	simulation.connect("physics_tick", self, "_on_physics_tick")
+	simulation.translation = aim_ball.translation
+	var throw_direction = towards_point
+	throw_direction = throw_direction.normalized()
+	throw_direction = throw_direction * throw_force
+	simulation.apply_impulse(Vector3(0,0,0), throw_direction)
+	return simulation
+
 
 func _input(event):
 	var mouse_click = event as InputEventMouseButton
@@ -77,14 +99,17 @@ func _input(event):
 		if pos_cursor.y < maximun_aim_angle:
 			aim_ball.translation.x = pos_cursor.x
 			aim_ball.translation.y = pos_cursor.y
+			if !throwing:
+				var ball = throw_simulation_ball(_screen_position_on_y_axis(event.position))
+			#ball.get_node("Ball").visible = false
 		
 		if pos2d.y > stones_room_bottom:
 			rotating_stones = false
 			
 		if !throwing and rotating_stones and pos2d.y < stones_room_bottom:
-			stones.set_stones_rotation( initial_rotation + (initial_x - pos2d.x))
+			stones.set_stones_rotation( initial_rotation + ((initial_x - pos2d.x)/2))
 			
-func _on_ball_hit(obj, ball):
+func _on_ball_hit(obj, ball):			
 	if obj.is_in_group("Stone"):
 		#removing child is slow so we just hide it
 		obj.hide()
@@ -106,3 +131,24 @@ func _on_ball_hit(obj, ball):
 				if stone.is_in_group("Stone"):
 					stone.reset()
 			should_restart = false
+
+func clear_simulations():
+	for n in simulated.get_children():
+		simulated.remove_child(n)
+
+func _on_aim_ball_hit(obj, ball):
+	var sphere = CSGSphere.new()
+	sphere.radius = 0.15
+	sphere.translation = ball.translation
+	ball.queue_free()
+	clear_simulations()
+	for p in simulation_points:
+		var simulated_point_mesh = CSGSphere.new()
+		simulated_point_mesh.radius = 0.05
+		simulated_point_mesh.translation = p
+		simulated.add_child(simulated_point_mesh)
+	simulated.add_child(sphere)
+	root.remove_child(ball)
+	
+func _on_physics_tick(ball):
+	simulation_points.append(ball.translation)
