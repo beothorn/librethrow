@@ -4,10 +4,9 @@ onready var root = get_node("/root/GameRoom")
 onready var stones = get_node("/root/GameRoom/Stones")
 onready var aim_ball = get_node("/root/GameRoom/Aim_ball")
 onready var stones_bottom = get_node("/root/GameRoom/StonesBottom")
-onready var stones_top = get_node("/root/GameRoom/StonesTop")
 onready var camera = get_node("/root/GameRoom/Camera")
-onready var simulated = get_node("/root/GameRoom/Simulated")
-onready var hit_prediction = get_node("/root/GameRoom/HitPrediction")
+onready var simulation_point_meshes = get_node("/root/GameRoom/SimulationPointsMeshes")
+onready var simulated_endpoint = get_node("/root/GameRoom/SimulatedEndpoint")
 
 onready var ball_gen = preload("res://playStage/DropBall.tscn") 
 onready var sim_ball_gen = preload("res://playStage/SimulatedBall.tscn")
@@ -22,8 +21,6 @@ var maximun_aim_angle = -0.26
 var should_restart = false
 var hidden_z_coordinate = -1000
 
-var simulation_points = []
-
 var stones_room_bottom
 
 var initial_x = 0
@@ -34,11 +31,13 @@ var throwing = false
 
 var click_start = 0
 var mouse_pressed = false
-
-var y_axis = Vector3(0,1,0)
+var simulation
 
 func _ready():
 	stones_room_bottom = stones_bottom.get_global_transform().origin.y
+	simulation = sim_ball_gen.instance()
+	add_child(simulation)
+	throw_simulation_ball(Vector3(0,-1,0))
 
 const plane = Plane(Vector3(0,0,0), Vector3(1,0,0), Vector3(0,1,0))
 const ray_length = 1000
@@ -61,25 +60,21 @@ func throw_ball(towards_point):
 	ball.throw(gravity, throw_direction, bounciness)
 	return ball
 	
-func throw_simulation_ball(towards_point):
-	clear_simulations()
-	simulation_points.clear()
-	var simulation = sim_ball_gen.instance()
-	
-	simulated.add_child(simulation)
-	simulation.translation = aim_ball.translation
-	
+func throw_simulation_ball(towards_point):	
 	var throw_direction = towards_point
 	throw_direction = throw_direction.normalized()
 	throw_direction = throw_direction * throw_force
 	
-	var simulation_points = simulation.simulate(gravity, throw_direction, bounciness, bounce_count)
+	var create_on_every_interaction = 5
+	var simulation_points = simulation.simulate(aim_ball.translation, gravity, throw_direction, bounciness, bounce_count, create_on_every_interaction)
+	
+	var point_count = len(simulation_points)
+	simulation_point_meshes.multimesh.visible_instance_count = point_count
 
-	for p in simulation_points:
-		var simulated_point_mesh = CSGSphere.new()
-		simulated_point_mesh.radius = 0.05
-		simulated_point_mesh.translation = p
-		simulated.add_child(simulated_point_mesh)
+	for i in range(point_count):
+		simulation_point_meshes.multimesh.set_instance_transform(i, Transform(Basis(), simulation_points[i]))
+	simulated_endpoint.visible = true
+	simulated_endpoint.translation = simulation_points[point_count-1]
 	
 	return simulation
 
@@ -126,7 +121,7 @@ func _input(event):
 				aim_ball.translation.x = pos_cursor.x
 				aim_ball.translation.y = pos_cursor.y
 				if !throwing:
-					var ball = throw_simulation_ball(_screen_position_on_y_axis(event.position))
+					throw_simulation_ball(_screen_position_on_y_axis(event.position))
 			
 			if pos2d.y > stones_room_bottom:
 				rotating_stones = false
@@ -158,5 +153,5 @@ func _on_ball_hit(obj, ball):
 			should_restart = false
 
 func clear_simulations():
-	for n in simulated.get_children():
-		simulated.remove_child(n)
+	simulation_point_meshes.multimesh.visible_instance_count = 0
+	simulated_endpoint.visible = false
