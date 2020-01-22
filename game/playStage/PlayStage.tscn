@@ -92,7 +92,6 @@ shape = SubResource( 6 )
 mesh = SubResource( 8 )
 
 [node name="Stones" type="Spatial" parent="."]
-editor/display_folded = true
 script = ExtResource( 2 )
 
 [node name="Aim" type="CSGMesh" parent="Stones"]

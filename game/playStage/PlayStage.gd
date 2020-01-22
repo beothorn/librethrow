@@ -9,10 +9,14 @@ onready var camera = get_node("/root/GameRoom/Camera")
 onready var simulated = get_node("/root/GameRoom/Simulated")
 onready var hit_prediction = get_node("/root/GameRoom/HitPrediction")
 
-onready var ball_gen = preload("res://playStage/ThrownBall.tscn") 
-onready var sim_ball_gen = preload("res://playStage/SimulationBall.tscn")
+onready var ball_gen = preload("res://playStage/DropBall.tscn") 
+onready var sim_ball_gen = preload("res://playStage/SimulatedBall.tscn")
 
-var throw_force = 8
+export (float) var throw_force = 10
+export (float) var gravity = 7
+export (float) var bounciness = 0.8
+export (int) var bounce_count = 2
+
 var aim_circle_radius = 2.2
 var maximun_aim_angle = -0.26
 var should_restart = false
@@ -44,7 +48,6 @@ func _screen_position_on_y_axis(position):
 	return plane.intersects_ray(camera.get_global_transform().origin, to)
 
 func throw_ball(towards_point):
-	Engine.time_scale = 1
 	clear_simulations()
 	var ball = ball_gen.instance()
 	root.add_child(ball)
@@ -54,21 +57,30 @@ func throw_ball(towards_point):
 	var throw_direction = towards_point
 	throw_direction = throw_direction.normalized()
 	throw_direction = throw_direction * throw_force
-	ball.apply_impulse(Vector3(0,0,0), throw_direction)
+	
+	ball.throw(gravity, throw_direction, bounciness)
 	return ball
 	
 func throw_simulation_ball(towards_point):
 	clear_simulations()
 	simulation_points.clear()
 	var simulation = sim_ball_gen.instance()
+	
 	simulated.add_child(simulation)
-	simulation.connect("collision", self, "_on_aim_ball_hit")
-	simulation.connect("physics_tick", self, "_on_physics_tick")
 	simulation.translation = aim_ball.translation
+	
 	var throw_direction = towards_point
 	throw_direction = throw_direction.normalized()
 	throw_direction = throw_direction * throw_force
-	simulation.apply_impulse(Vector3(0,0,0), throw_direction)
+	
+	var simulation_points = simulation.simulate(gravity, throw_direction, bounciness, bounce_count)
+
+	for p in simulation_points:
+		var simulated_point_mesh = CSGSphere.new()
+		simulated_point_mesh.radius = 0.05
+		simulated_point_mesh.translation = p
+		simulated.add_child(simulated_point_mesh)
+	
 	return simulation
 
 
@@ -148,21 +160,3 @@ func _on_ball_hit(obj, ball):
 func clear_simulations():
 	for n in simulated.get_children():
 		simulated.remove_child(n)
-
-func _on_aim_ball_hit(obj, ball):
-	var sphere = CSGSphere.new()
-	sphere.radius = 0.15
-	sphere.translation = ball.translation
-	ball.queue_free()
-	clear_simulations()
-	for p in simulation_points:
-		var simulated_point_mesh = CSGSphere.new()
-		simulated_point_mesh.radius = 0.05
-		simulated_point_mesh.translation = p
-		simulated.add_child(simulated_point_mesh)
-	simulated.add_child(sphere)
-	root.remove_child(ball)
-	
-	
-func _on_physics_tick(ball):
-	simulation_points.append(ball.translation)
