@@ -1,9 +1,10 @@
 extends KinematicBody
+class_name SimulatedBall
 
 onready var gameRoom = get_node("/root/GameRoom")
 onready var collision = get_node("CollisionShape")
 
-func simulate(starting_point:Vector3, gravity:float, throw_direction:Vector3, bounciness:float, bounce_simulations:int, create_on_every_interaction:int):
+func simulate(starting_point:Vector3, gravity:float, throw_direction:Vector3, bounciness:float, bounce_simulations:int, create_on_every_interaction:int) -> Array:
 	collision.disabled = false
 	self.translation = starting_point
 	var velocity = Vector3()

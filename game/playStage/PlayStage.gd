@@ -16,22 +16,25 @@ export (float) var gravity = 7
 export (float) var bounciness = 0.8
 export (int) var bounce_count = 2
 
-var aim_circle_radius = 2.2
-var maximun_aim_angle = -0.26
-var should_restart = false
-var hidden_z_coordinate = -1000
+var aim_circle_radius:float = 2.2
+var maximun_aim_angle:float = -0.26
+var should_restart:bool = false
+var hidden_z_coordinate:int = -1000
 
-var stones_room_bottom
+var stones_room_bottom:float
 
-var initial_x = 0
-var initial_rotation = 0
-var rotating_stones = false
+var initial_x:float = 0
+var initial_rotation:float = 0
+var rotating_stones:bool = false
 
-var throwing = false
+var initial_aim_rotation:Vector2 = Vector2(0,-aim_circle_radius)
+var aim_rotation:Vector2 = Vector2(0,-aim_circle_radius)
+
+var throwing:bool = false
 
 var click_start = 0
-var mouse_pressed = false
-var simulation
+var mouse_pressed:bool = false
+var simulation:SimulatedBall
 
 func _ready():
 	stones_room_bottom = stones_bottom.get_global_transform().origin.y
@@ -39,16 +42,16 @@ func _ready():
 	add_child(simulation)
 	throw_simulation_ball(Vector3(0,-1,0))
 
-const plane = Plane(Vector3(0,0,0), Vector3(1,0,0), Vector3(0,1,0))
+const plane:Plane = Plane(Vector3(0,0,0), Vector3(1,0,0), Vector3(0,1,0))
 const ray_length = 1000
-func _screen_position_on_y_axis(position):
+func _screen_position_on_y_axis(position:Vector2) -> Vector3:
 	var from = camera.project_ray_origin(position)
 	var to = from + camera.project_ray_normal(position) * ray_length
 	return plane.intersects_ray(camera.get_global_transform().origin, to)
 
-func throw_ball(towards_point):
+func throw_ball(towards_point:Vector3) -> Ball:
 	clear_simulations()
-	var ball = ball_gen.instance()
+	var ball:Ball = ball_gen.instance()
 	root.add_child(ball)
 	ball.connect("collision", self, "_on_ball_hit")
 	ball.translation = aim_ball.translation
@@ -60,13 +63,13 @@ func throw_ball(towards_point):
 	ball.throw(gravity, throw_direction, bounciness)
 	return ball
 	
-func throw_simulation_ball(towards_point):	
+func throw_simulation_ball(towards_point:Vector3) -> void:
 	var throw_direction = towards_point
 	throw_direction = throw_direction.normalized()
 	throw_direction = throw_direction * throw_force
 	
 	var create_on_every_interaction = 5
-	var simulation_points = simulation.simulate(aim_ball.translation, gravity, throw_direction, bounciness, bounce_count, create_on_every_interaction)
+	var simulation_points:Array = simulation.simulate(aim_ball.translation, gravity, throw_direction, bounciness, bounce_count, create_on_every_interaction)
 	
 	var point_count = len(simulation_points)
 	simulation_point_meshes.multimesh.visible_instance_count = point_count
@@ -75,8 +78,6 @@ func throw_simulation_ball(towards_point):
 		simulation_point_meshes.multimesh.set_instance_transform(i, Transform(Basis(), simulation_points[i]))
 	simulated_endpoint.visible = true
 	simulated_endpoint.translation = simulation_points[point_count-1]
-	
-	return simulation
 
 
 func _input(event):
@@ -91,6 +92,7 @@ func _input(event):
 			click_start = OS.get_ticks_msec()
 		
 		if left_released:
+			aim_rotation = Vector2(aim_ball.translation.x, aim_ball.translation.y)
 			mouse_pressed = false
 			
 		var left_click = left_released and (OS.get_ticks_msec() - click_start) < 200
@@ -104,10 +106,12 @@ func _input(event):
 			throw_ball(aim_ball.translation)
 			throwing = true
 		
-		if left_pressed and !throwing and pos2d.y < stones_room_bottom:
+		if left_pressed and !throwing:
 			initial_x = pos2d.x
+			initial_aim_rotation = aim_rotation
 			initial_rotation = stones.rotation.y
-			rotating_stones = true
+			if pos2d.y < stones_room_bottom:
+				rotating_stones = true
 		
 		if left_released and rotating_stones:
 			rotating_stones = false
@@ -115,21 +119,28 @@ func _input(event):
 	var mouse_motion = event as InputEventMouseMotion
 	if mouse_motion:
 		if mouse_pressed:
-			var pos2d = _screen_position_on_y_axis(event.position)
+			var pos2d:Vector3 = _screen_position_on_y_axis(event.position)
+			var rotation_speed = 15#bigger is more fine grainded
+			var max_angle = deg2rad(80)
+			var delta = (initial_x - pos2d.x) 
+			var drag_delta =  -max(min( delta / rotation_speed, max_angle), -max_angle)
 			var pos_cursor = pos2d.normalized() * aim_circle_radius
 			if pos_cursor.y < maximun_aim_angle:
-				aim_ball.translation.x = pos_cursor.x
-				aim_ball.translation.y = pos_cursor.y
+				if!rotating_stones:
+					var rotated_aim = initial_aim_rotation.rotated(drag_delta)
+					aim_ball.translation.x = rotated_aim.x
+					aim_ball.translation.y = rotated_aim.y
 				if !throwing:
-					throw_simulation_ball(_screen_position_on_y_axis(event.position))
+					var point_to = Vector2(aim_ball.translation.x, aim_ball.translation.y)
+					throw_simulation_ball(aim_ball.translation)
 			
 			if pos2d.y > stones_room_bottom:
 				rotating_stones = false
 				
 			if !throwing and rotating_stones and pos2d.y < stones_room_bottom:
-				stones.set_stones_rotation( initial_rotation + ((initial_x - pos2d.x)/2))
+				stones.set_stones_rotation( initial_rotation + (delta/2))
 			
-func _on_ball_hit(obj, ball):			
+func _on_ball_hit(obj, ball):
 	if obj.is_in_group("Stone"):
 		#removing child is slow so we just hide it
 		obj.hide()
