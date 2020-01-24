@@ -6,7 +6,6 @@ onready var aim_ball = get_node("/root/GameRoom/Aim_ball")
 onready var stones_bottom = get_node("/root/GameRoom/StonesBottom")
 onready var camera = get_node("/root/GameRoom/Camera")
 onready var simulation_point_meshes = get_node("/root/GameRoom/SimulationPointsMeshes")
-onready var simulated_endpoint = get_node("/root/GameRoom/SimulatedEndpoint")
 
 onready var ball_gen = preload("res://playStage/DropBall.tscn") 
 onready var sim_ball_gen = preload("res://playStage/SimulatedBall.tscn")
@@ -71,13 +70,7 @@ func throw_simulation_ball(towards_point:Vector3) -> void:
 	
 	var simulation_points:Array = simulation.simulate(aim_ball.translation, gravity, throw_direction, bounciness, bounce_count, creation_interval)
 	
-	var point_count = len(simulation_points)
-	simulation_point_meshes.multimesh.visible_instance_count = point_count
-	for i in range(point_count):
-		simulation_point_meshes.multimesh.set_instance_transform(i, Transform(Basis(), simulation_points[i]))
-		
-	simulated_endpoint.visible = true
-	simulated_endpoint.translation = simulation_points[point_count-1]
+	simulation_point_meshes.set_points(simulation_points)
 
 
 func _input(event):
@@ -131,7 +124,6 @@ func _input(event):
 					aim_ball.translation.x = rotated_aim.x
 					aim_ball.translation.y = rotated_aim.y
 				if !throwing:
-					var point_to = Vector2(aim_ball.translation.x, aim_ball.translation.y)
 					throw_simulation_ball(aim_ball.translation)
 			
 			if pos2d.y > stones_room_bottom:
@@ -165,5 +157,4 @@ func _on_ball_hit(obj, ball):
 	stones.rebuild_meshes()
 
 func clear_simulations():
-	simulation_point_meshes.multimesh.visible_instance_count = 0
-	simulated_endpoint.visible = false
+	simulation_point_meshes.hide()

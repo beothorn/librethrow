@@ -12,8 +12,8 @@ onready var tween = get_node("Tween")
 var original_position
 var original_scale
 
-var is_hiding = false
-var is_hidden = false
+var _is_hiding = false
+var _is_hidden = false
 
 const plane = Plane(Vector3(0,0,0), Vector3(1,0,0), Vector3(0,1,0))
 
@@ -28,27 +28,27 @@ func _ready():
 	
 func reset():
 	translation = original_position
-	is_hiding = false
-	is_hidden = false
+	_is_hiding = false
+	_is_hidden = false
 	stone.set_visible(true)
 	stone_hit.set_visible(false)
 	project_collision_shadow()
 	
 func hide():
-	if is_hiding:
+	if _is_hiding:
 		return
-	is_hiding = true
+	_is_hiding = true
 	stone.set_visible(false)
 	stone_hit.set_visible(true)
 	timer.start()
 	
 func force_hide():
-	if is_hiding:
+	if _is_hiding:
 		tween.interpolate_property(self, "scale", scale, Vector3(0,0,0), 0.3, Tween.TRANS_EXPO, Tween.EASE_IN_OUT)
 		tween.start()
 	
 func is_hidden():
-	return is_hidden or is_hiding
+	return _is_hidden or _is_hiding
 
 func project_collision_shadow():
 	var camera_position =  camera.get_global_transform().origin
@@ -77,5 +77,5 @@ func _on_Timer_timeout():
 func _on_Tween_tween_completed(object, key):
 	translation.z = -1000
 	scale = original_scale
-	is_hiding = false
-	is_hidden = true
+	_is_hiding = false
+	_is_hidden = true

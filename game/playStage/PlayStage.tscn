@@ -1,9 +1,10 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://playStage/PlayStage.gd" type="Script" id=1]
-[ext_resource path="res://playStage/Stones.gd" type="Script" id=2]
-[ext_resource path="res://playStage/Stone.tscn" type="PackedScene" id=3]
-[ext_resource path="res://resources/images/lucas-benjamin-GAM-7l4QzmI-unsplash.jpg" type="Texture" id=4]
+[ext_resource path="res://playStage/SimulationPointsMeshes.gd" type="Script" id=2]
+[ext_resource path="res://playStage/Stones.gd" type="Script" id=3]
+[ext_resource path="res://playStage/Stone.tscn" type="PackedScene" id=4]
+[ext_resource path="res://resources/images/lucas-benjamin-GAM-7l4QzmI-unsplash.jpg" type="Texture" id=5]
 
 [sub_resource type="ProceduralSky" id=1]
 sky_top_color = Color( 0.156863, 0.278431, 0.560784, 1 )
@@ -77,7 +78,7 @@ radial_segments = 32
 rings = 16
 
 [sub_resource type="SpatialMaterial" id=20]
-albedo_texture = ExtResource( 4 )
+albedo_texture = ExtResource( 5 )
 
 [sub_resource type="SpatialMaterial" id=21]
 albedo_color = Color( 0.239216, 0.215686, 1, 1 )
@@ -95,6 +96,8 @@ transform_array = PoolVector3Array( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0,
 
 [node name="GameRoom" type="Spatial"]
 script = ExtResource( 1 )
+bounce_count = 2
+creation_interval = 2
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 2 )
@@ -161,76 +164,78 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00421086, 0 )
 
 [node name="SimulationPointsMeshes" type="MultiMeshInstance" parent="."]
 multimesh = SubResource( 14 )
+script = ExtResource( 2 )
 
-[node name="SimulatedEndpoint" type="CSGSphere" parent="."]
+[node name="SimulatedEndpoint" type="CSGSphere" parent="SimulationPointsMeshes"]
 radius = 0.15
 material = SubResource( 15 )
 
 [node name="Stones" type="Spatial" parent="."]
-script = ExtResource( 2 )
+editor/display_folded = true
+script = ExtResource( 3 )
 
 [node name="Aim" type="CSGMesh" parent="Stones"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.032, 0.045 )
 mesh = SubResource( 19 )
 
-[node name="Stone" parent="Stones" instance=ExtResource( 3 )]
+[node name="Stone" parent="Stones" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.240761, -7.39739, 0 )
 
-[node name="Stone12" parent="Stones" instance=ExtResource( 3 )]
+[node name="Stone12" parent="Stones" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.240761, -6.82374, -3.42964 )
 
-[node name="Stone17" parent="Stones" instance=ExtResource( 3 )]
+[node name="Stone17" parent="Stones" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.240761, -4.94578, -4.20245 )
 
-[node name="Stone19" parent="Stones" instance=ExtResource( 3 )]
+[node name="Stone19" parent="Stones" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.240761, -3.69382, 3.0685 )
 
-[node name="Stone6" parent="Stones" instance=ExtResource( 3 )]
+[node name="Stone6" parent="Stones" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.56942, -5.56171, 0 )
 
-[node name="Stone14" parent="Stones" instance=ExtResource( 3 )]
+[node name="Stone14" parent="Stones" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.56942, -6.15345, -2.41504 )
 
-[node name="Stone2" parent="Stones" instance=ExtResource( 3 )]
+[node name="Stone2" parent="Stones" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.686932, -7.39739, 0 )
 
-[node name="Stone10" parent="Stones" instance=ExtResource( 3 )]
+[node name="Stone10" parent="Stones" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.686932, -6.82374, -3.42964 )
 
-[node name="Stone5" parent="Stones" instance=ExtResource( 3 )]
+[node name="Stone5" parent="Stones" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.12325, -7.39739, 0 )
 
-[node name="Stone9" parent="Stones" instance=ExtResource( 3 )]
+[node name="Stone9" parent="Stones" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.12325, -6.56878, -3.42964 )
 
-[node name="Stone3" parent="Stones" instance=ExtResource( 3 )]
+[node name="Stone3" parent="Stones" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1331, -7.39739, 0 )
 
-[node name="Stone16" parent="Stones" instance=ExtResource( 3 )]
+[node name="Stone16" parent="Stones" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1331, -6.56878, -3.42964 )
 
-[node name="Stone8" parent="Stones" instance=ExtResource( 3 )]
+[node name="Stone8" parent="Stones" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.677079, -7.39739, 0 )
 
-[node name="Stone11" parent="Stones" instance=ExtResource( 3 )]
+[node name="Stone11" parent="Stones" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.677079, -6.82374, -3.42964 )
 
-[node name="Stone4" parent="Stones" instance=ExtResource( 3 )]
+[node name="Stone4" parent="Stones" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5729, -5.56171, 0 )
 
-[node name="Stone13" parent="Stones" instance=ExtResource( 3 )]
+[node name="Stone13" parent="Stones" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5729, -6.15345, -2.41504 )
 
-[node name="Stone7" parent="Stones" instance=ExtResource( 3 )]
+[node name="Stone7" parent="Stones" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.237281, -7.39739, 0 )
 
-[node name="Stone15" parent="Stones" instance=ExtResource( 3 )]
+[node name="Stone15" parent="Stones" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.237281, -6.82374, -3.42964 )
 
-[node name="Stone18" parent="Stones" instance=ExtResource( 3 )]
+[node name="Stone18" parent="Stones" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.237281, -4.94578, -4.20245 )
 
-[node name="Stone20" parent="Stones" instance=ExtResource( 3 )]
+[node name="Stone20" parent="Stones" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.237281, -3.69382, 3.0685 )
 
 [node name="Background" type="CSGCylinder" parent="Stones"]

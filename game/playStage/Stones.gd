@@ -10,7 +10,7 @@ func _ready():
 func _get_stones():
 	var result = []
 	var children = get_children()
-	for maybe_stone in get_children():
+	for maybe_stone in children:
 		if maybe_stone.is_in_group("Stone"):
 			result.append(maybe_stone)
 	return result
