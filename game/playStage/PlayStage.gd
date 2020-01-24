@@ -12,9 +12,10 @@ onready var ball_gen = preload("res://playStage/DropBall.tscn")
 onready var sim_ball_gen = preload("res://playStage/SimulatedBall.tscn")
 
 export (float) var throw_force = 10
-export (float) var gravity = 7
+export (float) var gravity = 9
 export (float) var bounciness = 0.8
-export (int) var bounce_count = 2
+export (int) var bounce_count = 1
+export (int) var  creation_interval = 1
 
 var aim_circle_radius:float = 2.2
 var maximun_aim_angle:float = -0.26
@@ -68,8 +69,7 @@ func throw_simulation_ball(towards_point:Vector3) -> void:
 	throw_direction = throw_direction.normalized()
 	throw_direction = throw_direction * throw_force
 	
-	var create_on_every_interaction = 5
-	var simulation_points:Array = simulation.simulate(aim_ball.translation, gravity, throw_direction, bounciness, bounce_count, create_on_every_interaction)
+	var simulation_points:Array = simulation.simulate(aim_ball.translation, gravity, throw_direction, bounciness, bounce_count, creation_interval)
 	
 	var point_count = len(simulation_points)
 	simulation_point_meshes.multimesh.visible_instance_count = point_count

@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://playStage/PlayStage.gd" type="Script" id=1]
 [ext_resource path="res://playStage/Stones.gd" type="Script" id=2]
@@ -66,6 +66,14 @@ transform_array = PoolVector3Array( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0,
 
 [sub_resource type="SpatialMaterial" id=15]
 albedo_color = Color( 0.172549, 1, 0, 1 )
+
+[sub_resource type="SphereMesh" id=19]
+radius = 0.21
+height = 0.42
+
+[sub_resource type="MultiMesh" id=20]
+transform_format = 1
+mesh = SubResource( 19 )
 
 [sub_resource type="SpatialMaterial" id=16]
 albedo_color = Color( 0.270588, 0.282353, 0.403922, 1 )
@@ -154,7 +162,11 @@ multimesh = SubResource( 14 )
 radius = 0.15
 material = SubResource( 15 )
 
+[node name="StoneMeshes" type="MultiMeshInstance" parent="."]
+multimesh = SubResource( 20 )
+
 [node name="Stones" type="Spatial" parent="."]
+editor/display_folded = true
 script = ExtResource( 2 )
 
 [node name="Aim" type="CSGMesh" parent="Stones"]

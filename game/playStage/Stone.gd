@@ -2,8 +2,7 @@ extends StaticBody
 
 var collisionShape
 onready var stone = get_node("StoneMesh")
-onready var stone_core = get_node("StoneCore")
-onready var stone_core_on = get_node("StoneCoreOn")
+onready var stone_hit = get_node("StoneHit")
 onready var camera = get_node("/root/GameRoom/Camera")
 onready var center_pos = get_node("Center")
 onready var radius_pos = get_node("Radius")
@@ -32,16 +31,16 @@ func reset():
 	translation = original_position
 	is_hiding = false
 	is_hidden = false
-	stone_core.set_visible(true)
-	stone_core_on.set_visible(false)
+	stone.set_visible(true)
+	stone_hit.set_visible(false)
 	project_collision_shadow()
 	
 func hide():
 	if is_hiding:
 		return
 	is_hiding = true
-	stone_core.set_visible(false)
-	stone_core_on.set_visible(true)
+	stone.set_visible(false)
+	stone_hit.set_visible(true)
 	timer.start()
 	
 func force_hide():

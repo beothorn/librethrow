@@ -1,12 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://playStage/Stone.gd" type="Script" id=1]
-[ext_resource path="res://playStage/StoneOff.tres" type="Material" id=2]
-[ext_resource path="res://playStage/StoneOn.tres" type="Material" id=3]
+[ext_resource path="res://playStage/StoneOn.tres" type="Material" id=2]
 
 [sub_resource type="SpatialMaterial" id=1]
-flags_transparent = true
-albedo_color = Color( 0.729412, 0.729412, 0.729412, 0.478431 )
+albedo_color = Color( 0.239216, 0.215686, 1, 1 )
 
 [sub_resource type="SphereMesh" id=2]
 material = SubResource( 1 )
@@ -15,17 +13,10 @@ height = 0.42
 radial_segments = 16
 rings = 6
 
-[sub_resource type="SphereMesh" id=3]
-material = ExtResource( 2 )
-radius = 0.17
-height = 0.34
-radial_segments = 8
-rings = 10
-
 [sub_resource type="SphereMesh" id=4]
-material = ExtResource( 3 )
-radius = 0.17
-height = 0.34
+material = ExtResource( 2 )
+radius = 0.21
+height = 0.42
 radial_segments = 8
 rings = 10
 
@@ -37,10 +28,7 @@ script = ExtResource( 1 )
 [node name="StoneMesh" type="CSGMesh" parent="."]
 mesh = SubResource( 2 )
 
-[node name="StoneCore" type="CSGMesh" parent="."]
-mesh = SubResource( 3 )
-
-[node name="StoneCoreOn" type="CSGMesh" parent="."]
+[node name="StoneHit" type="CSGMesh" parent="."]
 visible = false
 mesh = SubResource( 4 )
 
