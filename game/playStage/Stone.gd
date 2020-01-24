@@ -8,7 +8,6 @@ onready var center_pos = get_node("Center")
 onready var radius_pos = get_node("Radius")
 onready var timer = get_node("Timer")
 onready var tween = get_node("Tween")
-var on_material = preload("res://playStage/StoneOn.tres")
 
 var original_position
 var original_scale

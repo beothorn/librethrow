@@ -15,7 +15,7 @@ export (float) var throw_force = 10
 export (float) var gravity = 9
 export (float) var bounciness = 0.8
 export (int) var bounce_count = 1
-export (int) var  creation_interval = 1
+export (int) var creation_interval = 1
 
 var aim_circle_radius:float = 2.2
 var maximun_aim_angle:float = -0.26
@@ -35,7 +35,7 @@ var throwing:bool = false
 
 var click_start = 0
 var mouse_pressed:bool = false
-var simulation:SimulatedBall
+var simulation
 
 func _ready():
 	stones_room_bottom = stones_bottom.get_global_transform().origin.y
@@ -50,9 +50,9 @@ func _screen_position_on_y_axis(position:Vector2) -> Vector3:
 	var to = from + camera.project_ray_normal(position) * ray_length
 	return plane.intersects_ray(camera.get_global_transform().origin, to)
 
-func throw_ball(towards_point:Vector3) -> Ball:
+func throw_ball(towards_point:Vector3):
 	clear_simulations()
-	var ball:Ball = ball_gen.instance()
+	var ball = ball_gen.instance()
 	root.add_child(ball)
 	ball.connect("collision", self, "_on_ball_hit")
 	ball.translation = aim_ball.translation
@@ -73,9 +73,9 @@ func throw_simulation_ball(towards_point:Vector3) -> void:
 	
 	var point_count = len(simulation_points)
 	simulation_point_meshes.multimesh.visible_instance_count = point_count
-
 	for i in range(point_count):
 		simulation_point_meshes.multimesh.set_instance_transform(i, Transform(Basis(), simulation_points[i]))
+		
 	simulated_endpoint.visible = true
 	simulated_endpoint.translation = simulation_points[point_count-1]
 
@@ -120,7 +120,7 @@ func _input(event):
 	if mouse_motion:
 		if mouse_pressed:
 			var pos2d:Vector3 = _screen_position_on_y_axis(event.position)
-			var rotation_speed = 15#bigger is more fine grainded
+			var rotation_speed = 10#bigger is more fine grainded
 			var max_angle = deg2rad(80)
 			var delta = (initial_x - pos2d.x) 
 			var drag_delta =  -max(min( delta / rotation_speed, max_angle), -max_angle)
@@ -162,6 +162,7 @@ func _on_ball_hit(obj, ball):
 				if stone.is_in_group("Stone"):
 					stone.reset()
 			should_restart = false
+	stones.rebuild_meshes()
 
 func clear_simulations():
 	simulation_point_meshes.multimesh.visible_instance_count = 0
