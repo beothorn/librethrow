@@ -14,9 +14,10 @@ export (float) var throw_force = 10
 export (float) var gravity = 9
 export (float) var bounciness = 0.8
 export (float) var aim_sensitivity = 100#this should not be linear, the closer the more precise
+export (float) var max_aim_rotation_speed = 100
 export (float) var rotation_sensitivity = 2
 export (float) var focus_sensitivity = 4
-export (int) var bounce_count = 1
+export (int) var bounce_count = 2
 export (int) var creation_interval = 1
 
 var aim_circle_radius:float = 2.2
@@ -118,11 +119,8 @@ func _input(event):
 			var pos2d:Vector3 = _screen_position_on_y_axis(event.position)
 			var max_angle = deg2rad(80)
 			var delta = (initial_x - pos2d.x) 
-			
-			if delta > 0:
-				delta = max(min( (delta*delta)*focus_sensitivity , 100), -100)
-			else:
-				delta = -max(min( (delta*delta)*focus_sensitivity , 100), -100)
+
+			delta = max(min( (delta*delta*delta)*focus_sensitivity , max_aim_rotation_speed), -max_aim_rotation_speed)
 			var drag_delta =  -max(min( delta / aim_sensitivity, max_angle), -max_angle)
 			var pos_cursor = pos2d.normalized() * aim_circle_radius
 			if pos_cursor.y < maximun_aim_angle:

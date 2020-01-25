@@ -18,6 +18,7 @@ var _is_hidden = false
 const plane = Plane(Vector3(0,0,0), Vector3(1,0,0), Vector3(0,1,0))
 
 func _ready():
+	stone.queue_free()
 	original_position = translation
 	original_scale = scale
 	collisionShape = CollisionShape.new()
@@ -30,7 +31,6 @@ func reset():
 	translation = original_position
 	_is_hiding = false
 	_is_hidden = false
-	stone.set_visible(true)
 	stone_hit.set_visible(false)
 	project_collision_shadow()
 	
@@ -38,7 +38,6 @@ func hide():
 	if _is_hiding:
 		return
 	_is_hiding = true
-	stone.set_visible(false)
 	stone_hit.set_visible(true)
 	timer.start()
 	

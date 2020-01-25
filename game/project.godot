@@ -10,11 +10,17 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "KinematicBody",
+"class": "Ball",
+"language": "GDScript",
+"path": "res://playStage/DropBall.gd"
+}, {
+"base": "KinematicBody",
 "class": "SimulatedBall",
 "language": "GDScript",
 "path": "res://playStage/SimulatedBall.gd"
 } ]
 _global_script_class_icons={
+"Ball": "",
 "SimulatedBall": ""
 }
 
