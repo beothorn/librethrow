@@ -13,6 +13,9 @@ onready var sim_ball_gen = preload("res://playStage/SimulatedBall.tscn")
 export (float) var throw_force = 10
 export (float) var gravity = 9
 export (float) var bounciness = 0.8
+export (float) var aim_sensitivity = 100#this should not be linear, the closer the more precise
+export (float) var rotation_sensitivity = 2
+export (float) var focus_sensitivity = 4
 export (int) var bounce_count = 1
 export (int) var creation_interval = 1
 
@@ -113,10 +116,14 @@ func _input(event):
 	if mouse_motion:
 		if mouse_pressed:
 			var pos2d:Vector3 = _screen_position_on_y_axis(event.position)
-			var rotation_speed = 10#bigger is more fine grainded
 			var max_angle = deg2rad(80)
 			var delta = (initial_x - pos2d.x) 
-			var drag_delta =  -max(min( delta / rotation_speed, max_angle), -max_angle)
+			
+			if delta > 0:
+				delta = max(min( (delta*delta)*focus_sensitivity , 100), -100)
+			else:
+				delta = -max(min( (delta*delta)*focus_sensitivity , 100), -100)
+			var drag_delta =  -max(min( delta / aim_sensitivity, max_angle), -max_angle)
 			var pos_cursor = pos2d.normalized() * aim_circle_radius
 			if pos_cursor.y < maximun_aim_angle:
 				if!rotating_stones:
@@ -130,7 +137,7 @@ func _input(event):
 				rotating_stones = false
 				
 			if !throwing and rotating_stones and pos2d.y < stones_room_bottom:
-				stones.set_stones_rotation( initial_rotation + (delta/2))
+				stones.set_stones_rotation( initial_rotation + (delta/ rotation_sensitivity))
 			
 func _on_ball_hit(obj, ball):
 	if obj.is_in_group("Stone"):
