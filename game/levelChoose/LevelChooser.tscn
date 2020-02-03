@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=2]
+
+[sub_resource type="QuadMesh" id=1]
+size = Vector2( 2.096, 2.084 )
+
+[sub_resource type="SpatialMaterial" id=2]
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_color = Color( 0.976471, 0.0431373, 0.0431373, 1 )
+
+[sub_resource type="SphereShape" id=4]
+radius = 0.1
+
+[node name="LevelRoom" type="Spatial"]
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.38643 )
+
+[node name="CSGMesh" type="CSGMesh" parent="."]
+mesh = SubResource( 1 )
+material = SubResource( 2 )
+
+[node name="Levels" type="Spatial" parent="."]
+
+[node name="Level1" type="StaticBody" parent="Levels"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.262622, 0, 0 )
+
+[node name="CSGSphere" type="CSGSphere" parent="Levels/Level1"]
+radius = 0.1
+material = SubResource( 3 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Levels/Level1"]
+shape = SubResource( 4 )

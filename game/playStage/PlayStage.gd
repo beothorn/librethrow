@@ -1,11 +1,13 @@
 extends Spatial
 
-onready var root = get_node("/root/GameRoom")
-onready var stones = get_node("/root/GameRoom/Stones")
-onready var aim_ball = get_node("/root/GameRoom/Aim_ball")
-onready var stones_bottom = get_node("/root/GameRoom/StonesBottom")
-onready var camera = get_node("/root/GameRoom/Camera")
-onready var simulation_point_meshes = get_node("/root/GameRoom/SimulationPointsMeshes")
+signal change_to_level_chooser
+
+onready var root = get_node(".")
+onready var stones = get_node("./Stones")
+onready var aim_ball = get_node("./Aim_ball")
+onready var stones_bottom = get_node("./StonesBottom")
+onready var camera = get_node("./Camera")
+onready var simulation_point_meshes = get_node("./SimulationPointsMeshes")
 
 onready var ball_gen = preload("res://playStage/DropBall.tscn") 
 onready var sim_ball_gen = preload("res://playStage/SimulatedBall.tscn")
@@ -13,16 +15,15 @@ onready var sim_ball_gen = preload("res://playStage/SimulatedBall.tscn")
 export (float) var throw_force = 10
 export (float) var gravity = 9
 export (float) var bounciness = 0.8
-export (float) var aim_sensitivity = 100#this should not be linear, the closer the more precise
-export (float) var max_aim_rotation_speed = 100
+export (float) var aim_sensitivity = 400
 export (float) var rotation_sensitivity = 2
 export (float) var focus_sensitivity = 4
 export (int) var bounce_count = 2
-export (int) var creation_interval = 1
+export (int) var creation_interval = 3
 
 var aim_circle_radius:float = 2.2
 var maximun_aim_angle:float = -0.26
-var should_restart:bool = false
+var all_stones_cleared:bool = false
 var hidden_z_coordinate:int = -1000
 
 var stones_room_bottom:float
@@ -80,7 +81,6 @@ func throw_simulation_ball(towards_point:Vector3) -> void:
 func _input(event):
 	var mouse_click = event as InputEventMouseButton
 	if mouse_click:
-		
 		var left_pressed = mouse_click.button_index == BUTTON_LEFT and mouse_click.pressed
 		var left_released = mouse_click.button_index == BUTTON_LEFT and !mouse_click.pressed
 		
@@ -96,12 +96,14 @@ func _input(event):
 		
 		if left_released and !throwing:
 			rotating_stones = false
+			throw_simulation_ball(aim_ball.translation)
 		
 		var pos2d = _screen_position_on_y_axis(event.position)
 		
 		if left_click and !throwing and pos2d.y > stones_room_bottom:
 			throw_ball(aim_ball.translation)
 			throwing = true
+			return
 		
 		if left_pressed and !throwing:
 			initial_x = pos2d.x
@@ -117,18 +119,15 @@ func _input(event):
 	if mouse_motion:
 		if mouse_pressed:
 			var pos2d:Vector3 = _screen_position_on_y_axis(event.position)
-			var max_angle = deg2rad(80)
 			var delta = (initial_x - pos2d.x) 
-
-			delta = max(min( (delta*delta*delta)*focus_sensitivity , max_aim_rotation_speed), -max_aim_rotation_speed)
-			var drag_delta =  -max(min( delta / aim_sensitivity, max_angle), -max_angle)
+			delta = (delta*delta*delta)*focus_sensitivity
+			var drag_delta =  -delta / aim_sensitivity
 			var pos_cursor = pos2d.normalized() * aim_circle_radius
-			if pos_cursor.y < maximun_aim_angle:
+			var rotated_aim = initial_aim_rotation.rotated(drag_delta)
+			if rotated_aim.y < maximun_aim_angle:
 				if!rotating_stones:
-					var rotated_aim = initial_aim_rotation.rotated(drag_delta)
 					aim_ball.translation.x = rotated_aim.x
 					aim_ball.translation.y = rotated_aim.y
-				if !throwing:
 					throw_simulation_ball(aim_ball.translation)
 			
 			if pos2d.y > stones_room_bottom:
@@ -136,15 +135,17 @@ func _input(event):
 				
 			if !throwing and rotating_stones and pos2d.y < stones_room_bottom:
 				stones.set_stones_rotation( initial_rotation + (delta/ rotation_sensitivity))
+				print("Simulate")
+				throw_simulation_ball(aim_ball.translation)
 			
 func _on_ball_hit(obj, ball):
 	if obj.is_in_group("Stone"):
 		#removing child is slow so we just hide it
 		obj.hide()
-		should_restart = true
+		all_stones_cleared = true
 		for stone in stones.get_children():
 			if stone.is_in_group("Stone") and !stone.is_hidden():
-				should_restart = false
+				all_stones_cleared = false
 		
 	if obj.is_in_group("BallKiller"):
 		root.remove_child(ball)
@@ -153,12 +154,13 @@ func _on_ball_hit(obj, ball):
 		for stone in stones.get_children():
 				if stone.is_in_group("Stone"):
 					stone.force_hide()
-		if should_restart:
+		if all_stones_cleared:
+			emit_signal("change_to_level_chooser")
 			stones.set_stones_rotation(0)
 			for stone in stones.get_children():
 				if stone.is_in_group("Stone"):
 					stone.reset()
-			should_restart = false
+			all_stones_cleared = false
 	stones.rebuild_meshes()
 
 func clear_simulations():

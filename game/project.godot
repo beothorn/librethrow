@@ -27,7 +27,7 @@ _global_script_class_icons={
 [application]
 
 config/name="LibreThrow"
-run/main_scene="res://playStage/PlayStage.tscn"
+run/main_scene="res://mainScene/main.tscn"
 config/icon="res://icon.png"
 
 [display]
