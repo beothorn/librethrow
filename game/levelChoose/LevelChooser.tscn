@@ -31,3 +31,13 @@ material = SubResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Levels/Level1"]
 shape = SubResource( 4 )
+
+[node name="Level2" type="StaticBody" parent="Levels"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0723334, 0.421277, 0 )
+
+[node name="CSGSphere" type="CSGSphere" parent="Levels/Level2"]
+radius = 0.1
+material = SubResource( 3 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Levels/Level2"]
+shape = SubResource( 4 )

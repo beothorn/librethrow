@@ -1,0 +1,68 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://playStage/Stone.tscn" type="PackedScene" id=2]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.335399, 0.180853, 0.0496147 )
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0.466667, 0.466667, 0.466667, 1 )
+
+[node name="Level" type="Spatial"]
+
+[node name="Stones" type="Spatial" parent="."]
+
+[node name="Stone21" parent="Stones" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.39264, -8.12894, -0.0112677 )
+
+[node name="Indestructables" type="Spatial" parent="."]
+
+[node name="StaticBody" type="StaticBody" parent="Indestructables"]
+transform = Transform( -0.503096, 0.864231, 0, -0.864231, -0.503096, 0, 0, 0, 1, -1.72888, -7.82319, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Indestructables/StaticBody"]
+transform = Transform( 1, 2.98023e-08, 0, -2.98023e-08, 1, 0, 0, 0, 1, 0, 0, 0 )
+shape = SubResource( 1 )
+
+[node name="CSGBox" type="CSGBox" parent="Indestructables/StaticBody"]
+width = 0.666
+height = 0.369
+depth = 0.0945679
+material = SubResource( 2 )
+
+[node name="StaticBody2" type="StaticBody" parent="Indestructables"]
+transform = Transform( 0.770792, 0.637088, 0, -0.637088, 0.770792, 0, 0, 0, 1, -1.09825, -7.79307, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Indestructables/StaticBody2"]
+shape = SubResource( 1 )
+
+[node name="CSGBox" type="CSGBox" parent="Indestructables/StaticBody2"]
+width = 0.666
+height = 0.369
+depth = 0.0945679
+material = SubResource( 2 )
+
+[node name="StaticBody3" type="StaticBody" parent="Indestructables"]
+transform = Transform( 0.855563, 0.517699, 0, -0.517699, 0.855563, 0, 0, 0, 1, -1.62347, -8.49562, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Indestructables/StaticBody3"]
+shape = SubResource( 1 )
+
+[node name="CSGBox" type="CSGBox" parent="Indestructables/StaticBody3"]
+transform = Transform( 1, 2.98023e-08, 0, -2.98023e-08, 1, 0, 0, 0, 1, 0, 0, 0 )
+width = 0.666
+height = 0.369
+depth = 0.0945679
+material = SubResource( 2 )
+
+[node name="StaticBody4" type="StaticBody" parent="Indestructables"]
+transform = Transform( 0.548235, -0.836325, 0, 0.836325, 0.548235, 0, 0, 0, 1, -1.01278, -8.39239, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Indestructables/StaticBody4"]
+shape = SubResource( 1 )
+
+[node name="CSGBox" type="CSGBox" parent="Indestructables/StaticBody4"]
+width = 0.666
+height = 0.369
+depth = 0.0945679
+material = SubResource( 2 )

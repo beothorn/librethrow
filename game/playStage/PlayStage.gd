@@ -3,11 +3,13 @@ extends Spatial
 signal change_to_level_chooser
 
 onready var root = get_node(".")
-onready var stones = get_node("./Stones")
-onready var aim_ball = get_node("./Aim_ball")
-onready var stones_bottom = get_node("./StonesBottom")
-onready var camera = get_node("./Camera")
-onready var simulation_point_meshes = get_node("./SimulationPointsMeshes")
+onready var stones
+onready var aim_ball = get_node("Aim_ball")
+onready var stones_bottom = get_node("StonesBottom")
+onready var camera = get_node("Camera")
+onready var simulation_point_meshes = get_node("SimulationPointsMeshes")
+onready var stone_meshes = get_node("StoneMeshes")
+onready var background = get_node("Background")
 
 onready var ball_gen = preload("res://playStage/DropBall.tscn") 
 onready var sim_ball_gen = preload("res://playStage/SimulatedBall.tscn")
@@ -40,12 +42,23 @@ var throwing:bool = false
 var click_start = 0
 var mouse_pressed:bool = false
 var simulation
+var hit_count = 0
 
 func _ready():
 	stones_room_bottom = stones_bottom.get_global_transform().origin.y
 	simulation = sim_ball_gen.instance()
 	add_child(simulation)
 	throw_simulation_ball(Vector3(0,-1,0))
+	set_stones_rotation(0)
+
+func load_level(level):
+	add_child(level.instance())
+	stones = get_node("Level/Stones")	
+	stones_room_bottom = stones_bottom.get_global_transform().origin.y
+	simulation = sim_ball_gen.instance()
+	add_child(simulation)
+	throw_simulation_ball(Vector3(0,-1,0))
+	set_stones_rotation(0)
 
 const plane:Plane = Plane(Vector3(0,0,0), Vector3(1,0,0), Vector3(0,1,0))
 const ray_length = 1000
@@ -72,13 +85,13 @@ func throw_simulation_ball(towards_point:Vector3) -> void:
 	var throw_direction = towards_point
 	throw_direction = throw_direction.normalized()
 	throw_direction = throw_direction * throw_force
-	
 	var simulation_points:Array = simulation.simulate(aim_ball.translation, gravity, throw_direction, bounciness, bounce_count, creation_interval)
-	
 	simulation_point_meshes.set_points(simulation_points)
 
 
 func _input(event):
+	if !stones:
+		return
 	var mouse_click = event as InputEventMouseButton
 	if mouse_click:
 		var left_pressed = mouse_click.button_index == BUTTON_LEFT and mouse_click.pressed
@@ -134,7 +147,9 @@ func _input(event):
 				rotating_stones = false
 				
 			if !throwing and rotating_stones and pos2d.y < stones_room_bottom:
-				stones.set_stones_rotation( initial_rotation + (delta/ rotation_sensitivity))
+				var new_rotation = initial_rotation + (delta/ rotation_sensitivity)
+				set_stones_rotation( new_rotation)
+				
 				print("Simulate")
 				throw_simulation_ball(aim_ball.translation)
 			
@@ -156,12 +171,51 @@ func _on_ball_hit(obj, ball):
 					stone.force_hide()
 		if all_stones_cleared:
 			emit_signal("change_to_level_chooser")
-			stones.set_stones_rotation(0)
+			set_stones_rotation(0)
 			for stone in stones.get_children():
 				if stone.is_in_group("Stone"):
 					stone.reset()
 			all_stones_cleared = false
-	stones.rebuild_meshes()
+	rebuild_meshes()
 
 func clear_simulations():
 	simulation_point_meshes.hide()
+
+func _get_stones():
+	var result = []
+	var children = stones.get_children()
+	for maybe_stone in children:
+		if maybe_stone.is_in_group("Stone"):
+			result.append(maybe_stone)
+	return result
+
+func set_stones_rotation(angle:float):
+	if !stones:
+		return
+	stone_meshes.rotation.y = angle
+	stones.rotation.y = angle
+	background.rotation.y = angle
+	var stones = _get_stones()
+	var stone_count = len(stones)
+	stone_meshes.multimesh.visible_instance_count = stone_count
+	var counter = 0
+	for stone in stones:
+		stone.project_collision_shadow()
+		stone_meshes.multimesh.set_instance_transform(counter, stone.get_transform())
+		counter += 1
+
+func rebuild_meshes():
+	hit_count += 1
+	var stones_to_hit = _get_stones()
+	
+	var visible_stones = []
+	for stone in stones_to_hit:
+		if !stone.is_hidden():
+			visible_stones.append(stone)
+	
+	var stone_count = len(visible_stones)
+	stone_meshes.multimesh.visible_instance_count = stone_count
+	var counter = 0
+	for stone in visible_stones:
+		stone_meshes.multimesh.set_instance_transform(counter, stone.get_transform())
+		counter += 1

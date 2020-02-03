@@ -3,7 +3,7 @@ extends StaticBody
 var collisionShape
 onready var stone = get_node("StoneMesh")
 onready var stone_hit = get_node("StoneHit")
-onready var camera = get_node("../../Camera")
+onready var camera = get_node("../../../Camera")
 onready var center_pos = get_node("Center")
 onready var radius_pos = get_node("Radius")
 onready var timer = get_node("Timer")
